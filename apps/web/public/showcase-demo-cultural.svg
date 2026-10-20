@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" fill="none">
+  <defs>
+    <linearGradient id="gallery" x1="50" y1="35" x2="900" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8F1EA"/>
+      <stop offset="1" stop-color="#D3E3DC"/>
+    </linearGradient>
+    <linearGradient id="art" x1="320" y1="144" x2="565" y2="382" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#75A999"/>
+      <stop offset="1" stop-color="#E4B878"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="650" rx="16" fill="url(#gallery)"/>
+  <path d="M0 477h960v173H0z" fill="#C9D8CE"/>
+  <path d="M78 68h804v411H78z" fill="#F8F7F1"/>
+  <path d="M78 68h804v19H78z" fill="#CBDAD0"/>
+  <rect x="275" y="123" width="410" height="290" rx="5" fill="#D5E3DA"/>
+  <rect x="295" y="143" width="370" height="250" rx="3" fill="#fff"/>
+  <rect x="311" y="159" width="338" height="218" fill="url(#art)"/>
+  <circle cx="540" cy="220" r="34" fill="#F1D69B"/>
+  <path d="M311 337c69-76 112-92 160-62 38 24 89 8 178-73v175H311z" fill="#406F68" fill-opacity=".83"/>
+  <rect x="211" y="437" width="538" height="16" rx="8" fill="#B5C7BB"/>
+  <path d="M172 477h616" stroke="#A9BCAF" stroke-width="3"/>
+  <rect x="735" y="332" width="124" height="103" rx="14" fill="#fff" stroke="#CEDBD2" stroke-width="3"/>
+  <rect x="750" y="347" width="94" height="57" rx="7" fill="#EDF5F0"/>
+  <path d="M767 363h12v12h-12zm24 0h9v9h-9zm20 0h13v13h-13zm-44 20h9v9h-9zm17-2h12v12h-12zm22 2h20v9h-20z" fill="#194C53"/>
+  <path d="M775 416h43" stroke="#9CB4A7" stroke-width="4" stroke-linecap="round"/>
+  <path d="M434 476c-5-66 20-106 68-106s72 42 68 106" fill="#147C82"/>
+  <circle cx="502" cy="340" r="31" fill="#C77E58"/>
+  <path d="M476 376h53l35 100h-126z" fill="#157980"/>
+  <path d="m474 409-39 34m81-35 35 37" stroke="#C77E58" stroke-width="15" stroke-linecap="round"/>
+  <path d="m480 476-34 42m89-42 29 42" stroke="#263F45" stroke-width="13" stroke-linecap="round"/>
+  <path d="M596 372c35-42 72-52 109-31" stroke="#087E91" stroke-width="4" stroke-dasharray="7 9" stroke-linecap="round"/>
+  <circle cx="708" cy="339" r="9" fill="#20A995"/>
+  <circle cx="702" cy="338" r="18" stroke="#20A995" stroke-opacity=".3" stroke-width="6"/>
+</svg>

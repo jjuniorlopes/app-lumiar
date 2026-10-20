@@ -1,0 +1,39 @@
+name: lumiar_mobile
+description: "Aplicativo Mobile Acessível do Projeto Lumiar para Museus e Espaços Culturais."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Scanner de QR Code de alta performance
+  mobile_scanner: ^5.2.3
+
+  # Síntese e reconhecimento de voz (Acessibilidade pt-BR)
+  flutter_tts: ^4.2.2
+  speech_to_text: ^7.0.0
+  audioplayers: ^6.1.0
+
+  # Conexão HTTP REST e armazenamento offline local
+  http: ^1.2.2
+  shared_preferences: ^2.3.2
+
+  # Ícones e UI
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/audio/
+

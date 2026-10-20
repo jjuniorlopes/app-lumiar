@@ -1,0 +1,738 @@
+{
+  "total_commits": 12,
+  "commits": [
+    {
+      "hash": "c0c739d1a0435810cb1a2073b92664af8f958bca",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Thu Oct 8 01:34:16 2026 -0400",
+      "subject": "feat: aprimora acessibilidade e assistente Lumi",
+      "body": "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+      "files_changed": [
+        {
+          "additions": "10",
+          "deletions": "1",
+          "file": ".env.example"
+        },
+        {
+          "additions": "5",
+          "deletions": "0",
+          "file": "README.md"
+        },
+        {
+          "additions": "9",
+          "deletions": "1",
+          "file": "apps/api/app/config.py"
+        },
+        {
+          "additions": "112",
+          "deletions": "1",
+          "file": "apps/api/app/routers/core.py"
+        },
+        {
+          "additions": "444",
+          "deletions": "48",
+          "file": "apps/api/app/routers/public.py"
+        },
+        {
+          "additions": "142",
+          "deletions": "57",
+          "file": "apps/api/app/services/ai_service.py"
+        },
+        {
+          "additions": "184",
+          "deletions": "0",
+          "file": "apps/api/test_ai_service_unit.py"
+        },
+        {
+          "additions": "104",
+          "deletions": "0",
+          "file": "apps/api/test_public_scan_unit.py"
+        },
+        {
+          "additions": "98",
+          "deletions": "0",
+          "file": "apps/api/test_showcase_images_unit.py"
+        },
+        {
+          "additions": "13",
+          "deletions": "4",
+          "file": "apps/mobile/README.md"
+        },
+        {
+          "additions": "2",
+          "deletions": "3",
+          "file": "apps/mobile/lib/main.dart"
+        },
+        {
+          "additions": "108",
+          "deletions": "24",
+          "file": "apps/mobile/lib/screens/item_detail_screen.dart"
+        },
+        {
+          "additions": "443",
+          "deletions": "131",
+          "file": "apps/mobile/lib/screens/lumi_chat_screen.dart"
+        },
+        {
+          "additions": "42",
+          "deletions": "14",
+          "file": "apps/mobile/lib/screens/scanner_screen.dart"
+        },
+        {
+          "additions": "149",
+          "deletions": "0",
+          "file": "apps/mobile/lib/screens/visitor_home_screen.dart"
+        },
+        {
+          "additions": "47",
+          "deletions": "24",
+          "file": "apps/mobile/lib/services/api_service.dart"
+        },
+        {
+          "additions": "22",
+          "deletions": "5",
+          "file": "apps/mobile/lib/services/tts_service.dart"
+        },
+        {
+          "additions": "7",
+          "deletions": "2",
+          "file": "apps/mobile/test/widget_test.dart"
+        },
+        {
+          "additions": "35",
+          "deletions": "0",
+          "file": "apps/web/public/showcase-demo-cultural.svg"
+        },
+        {
+          "additions": "28",
+          "deletions": "0",
+          "file": "apps/web/public/showcase-demo-guia.svg"
+        },
+        {
+          "additions": "39",
+          "deletions": "0",
+          "file": "apps/web/public/showcase-demo-hero.svg"
+        },
+        {
+          "additions": "466",
+          "deletions": "70",
+          "file": "apps/web/src/main.tsx"
+        },
+        {
+          "additions": "710",
+          "deletions": "0",
+          "file": "apps/web/src/styles/landing-polish.css"
+        },
+        {
+          "additions": "18",
+          "deletions": "0",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "b4cc41bef7d0d59f70e19926aba2fd741e54ed60",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 23:53:13 2026 -0400",
+      "subject": "fix(public): adicionar pagina web responsiva para leitura de QRCode e corrigir encoding UTF-8",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "5",
+          "deletions": "1",
+          "file": "apps/api/app/database.py"
+        },
+        {
+          "additions": "637",
+          "deletions": "47",
+          "file": "apps/api/app/routers/public.py"
+        }
+      ]
+    },
+    {
+      "hash": "74a5fde20d5f4b349d1e063c9a2c290caa110437",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 23:22:42 2026 -0400",
+      "subject": "Instalação flutter e adição do app",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "4",
+          "deletions": "0",
+          "file": "README.md"
+        },
+        {
+          "additions": "5",
+          "deletions": "2",
+          "file": "apps/api/app/main.py"
+        },
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": "apps/api/app/routers/public.py"
+        },
+        {
+          "additions": "48",
+          "deletions": "0",
+          "file": "apps/mobile/.gitignore"
+        },
+        {
+          "additions": "30",
+          "deletions": "0",
+          "file": "apps/mobile/.metadata"
+        },
+        {
+          "additions": "33",
+          "deletions": "0",
+          "file": "apps/mobile/analysis_options.yaml"
+        },
+        {
+          "additions": "2",
+          "deletions": "3",
+          "file": "apps/mobile/lib/screens/lumi_chat_screen.dart"
+        },
+        {
+          "additions": "174",
+          "deletions": "27",
+          "file": "apps/mobile/lib/screens/scanner_screen.dart"
+        },
+        {
+          "additions": "96",
+          "deletions": "34",
+          "file": "apps/mobile/lib/services/api_service.dart"
+        },
+        {
+          "additions": "35",
+          "deletions": "11",
+          "file": "apps/mobile/lib/services/tts_service.dart"
+        },
+        {
+          "additions": "639",
+          "deletions": "0",
+          "file": "apps/mobile/pubspec.lock"
+        },
+        {
+          "additions": "19",
+          "deletions": "0",
+          "file": "apps/mobile/test/widget_test.dart"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/mobile/web/favicon.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/mobile/web/icons/Icon-192.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/mobile/web/icons/Icon-512.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/mobile/web/icons/Icon-maskable-192.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/mobile/web/icons/Icon-maskable-512.png"
+        },
+        {
+          "additions": "46",
+          "deletions": "0",
+          "file": "apps/mobile/web/index.html"
+        },
+        {
+          "additions": "35",
+          "deletions": "0",
+          "file": "apps/mobile/web/manifest.json"
+        },
+        {
+          "additions": "6",
+          "deletions": "0",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "b2693df2689208cbbbafef6f0997de7fd14a5db4",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 19:35:12 2026 -0400",
+      "subject": "Correções para Gerar QRCode",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": ".env.example"
+        },
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": "apps/api/app/config.py"
+        },
+        {
+          "additions": "29",
+          "deletions": "7",
+          "file": "apps/api/app/routers/cultural.py"
+        },
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "d6a544680040e1cc1494565d3cdf3aaae85a8b0c",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 19:11:51 2026 -0400",
+      "subject": "ajustes para mobile",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "19",
+          "deletions": "0",
+          "file": "README.md"
+        },
+        {
+          "additions": "29",
+          "deletions": "19",
+          "file": "apps/mobile/lib/screens/offline_guides_screen.dart"
+        },
+        {
+          "additions": "15",
+          "deletions": "3",
+          "file": "apps/mobile/lib/services/api_service.dart"
+        },
+        {
+          "additions": "2",
+          "deletions": "0",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "102871439950570b6e4589180237af5ce9064c84",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 17:57:53 2026 -0400",
+      "subject": "correções de placeholder usuarios",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "1",
+          "deletions": "0",
+          "file": ".env.example"
+        },
+        {
+          "additions": "19",
+          "deletions": "7",
+          "file": "README.md"
+        },
+        {
+          "additions": "1",
+          "deletions": "0",
+          "file": "apps/api/app/config.py"
+        },
+        {
+          "additions": "13",
+          "deletions": "11",
+          "file": "apps/api/app/main.py"
+        },
+        {
+          "additions": "30",
+          "deletions": "0",
+          "file": "apps/api/app/routers/auth.py"
+        },
+        {
+          "additions": "5",
+          "deletions": "3",
+          "file": "apps/api/app/routers/core.py"
+        },
+        {
+          "additions": "41",
+          "deletions": "0",
+          "file": "apps/api/reset_production_data.py"
+        },
+        {
+          "additions": "85",
+          "deletions": "8",
+          "file": "apps/web/src/main.tsx"
+        }
+      ]
+    },
+    {
+      "hash": "a5f7f8cd61f9262e70ee6f5559e7a2643614e427",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 02:08:32 2026 -0400",
+      "subject": "feat: add API root status endpoint",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "9",
+          "deletions": "0",
+          "file": "apps/api/app/main.py"
+        }
+      ]
+    },
+    {
+      "hash": "3989f31d318ad57cc51a2436dc2758d37d628143",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 01:46:47 2026 -0400",
+      "subject": "fix(api): reduce gunicorn workers to 1 to avoid OOM",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": "apps/api/Dockerfile.prod"
+        }
+      ]
+    },
+    {
+      "hash": "7d64f35fb06d468d944c8829efb3a6d5307a0492",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 01:36:26 2026 -0400",
+      "subject": "ajustes de deploy no render",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "2",
+          "deletions": "0",
+          "file": "README.md"
+        },
+        {
+          "additions": "4",
+          "deletions": "2",
+          "file": "apps/api/app/config.py"
+        },
+        {
+          "additions": "1",
+          "deletions": "1",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "c6b0ae6cc51287407dc405f0fd2a8d3df35c3050",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 01:20:05 2026 -0400",
+      "subject": "fix(render): remove plan from static frontend",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "0",
+          "deletions": "1",
+          "file": "render.yaml"
+        }
+      ]
+    },
+    {
+      "hash": "3d91e7c7d11cd291a0d424f932c442ca49f1112c",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 01:15:51 2026 -0400",
+      "subject": "README",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "168",
+          "deletions": "250",
+          "file": "README.md"
+        }
+      ]
+    },
+    {
+      "hash": "7a0a707c441cfab5495615073753aaf193f44d69",
+      "author": "Jones Carlos Viegas <jonestga.ifmt@gmail.com>",
+      "date": "Sun Sep 20 01:05:57 2026 -0400",
+      "subject": "Initial commit",
+      "body": "",
+      "files_changed": [
+        {
+          "additions": "51",
+          "deletions": "0",
+          "file": ".env.example"
+        },
+        {
+          "additions": "165",
+          "deletions": "0",
+          "file": ".github/workflows/ci.yml"
+        },
+        {
+          "additions": "6",
+          "deletions": "0",
+          "file": ".gitignore"
+        },
+        {
+          "additions": "316",
+          "deletions": "0",
+          "file": "FASE1_COMPLETA.md"
+        },
+        {
+          "additions": "326",
+          "deletions": "0",
+          "file": "README.md"
+        },
+        {
+          "additions": "7",
+          "deletions": "0",
+          "file": "apps/api/Dockerfile"
+        },
+        {
+          "additions": "29",
+          "deletions": "0",
+          "file": "apps/api/Dockerfile.prod"
+        },
+        {
+          "additions": "73",
+          "deletions": "0",
+          "file": "apps/api/app/config.py"
+        },
+        {
+          "additions": "10",
+          "deletions": "0",
+          "file": "apps/api/app/database.py"
+        },
+        {
+          "additions": "224",
+          "deletions": "0",
+          "file": "apps/api/app/main.py"
+        },
+        {
+          "additions": "152",
+          "deletions": "0",
+          "file": "apps/api/app/middleware.py"
+        },
+        {
+          "additions": "118",
+          "deletions": "0",
+          "file": "apps/api/app/models.py"
+        },
+        {
+          "additions": "0",
+          "deletions": "0",
+          "file": "apps/api/app/routers/__init__.py"
+        },
+        {
+          "additions": "196",
+          "deletions": "0",
+          "file": "apps/api/app/routers/auth.py"
+        },
+        {
+          "additions": "142",
+          "deletions": "0",
+          "file": "apps/api/app/routers/billing.py"
+        },
+        {
+          "additions": "295",
+          "deletions": "0",
+          "file": "apps/api/app/routers/core.py"
+        },
+        {
+          "additions": "448",
+          "deletions": "0",
+          "file": "apps/api/app/routers/cultural.py"
+        },
+        {
+          "additions": "2",
+          "deletions": "0",
+          "file": "apps/api/app/routers/dashboard.py"
+        },
+        {
+          "additions": "137",
+          "deletions": "0",
+          "file": "apps/api/app/routers/public.py"
+        },
+        {
+          "additions": "116",
+          "deletions": "0",
+          "file": "apps/api/app/security.py"
+        },
+        {
+          "additions": "175",
+          "deletions": "0",
+          "file": "apps/api/app/services/ai_service.py"
+        },
+        {
+          "additions": "19",
+          "deletions": "0",
+          "file": "apps/api/requirements.txt"
+        },
+        {
+          "additions": "103",
+          "deletions": "0",
+          "file": "apps/api/test_cultural_flow.py"
+        },
+        {
+          "additions": "36",
+          "deletions": "0",
+          "file": "apps/mobile/README.md"
+        },
+        {
+          "additions": "42",
+          "deletions": "0",
+          "file": "apps/mobile/lib/main.dart"
+        },
+        {
+          "additions": "71",
+          "deletions": "0",
+          "file": "apps/mobile/lib/models/cultural_item.dart"
+        },
+        {
+          "additions": "226",
+          "deletions": "0",
+          "file": "apps/mobile/lib/screens/item_detail_screen.dart"
+        },
+        {
+          "additions": "207",
+          "deletions": "0",
+          "file": "apps/mobile/lib/screens/lumi_chat_screen.dart"
+        },
+        {
+          "additions": "94",
+          "deletions": "0",
+          "file": "apps/mobile/lib/screens/offline_guides_screen.dart"
+        },
+        {
+          "additions": "137",
+          "deletions": "0",
+          "file": "apps/mobile/lib/screens/scanner_screen.dart"
+        },
+        {
+          "additions": "71",
+          "deletions": "0",
+          "file": "apps/mobile/lib/services/api_service.dart"
+        },
+        {
+          "additions": "32",
+          "deletions": "0",
+          "file": "apps/mobile/lib/services/tts_service.dart"
+        },
+        {
+          "additions": "39",
+          "deletions": "0",
+          "file": "apps/mobile/pubspec.yaml"
+        },
+        {
+          "additions": "7",
+          "deletions": "0",
+          "file": "apps/web/Dockerfile"
+        },
+        {
+          "additions": "1",
+          "deletions": "0",
+          "file": "apps/web/index.html"
+        },
+        {
+          "additions": "1007",
+          "deletions": "0",
+          "file": "apps/web/package-lock.json"
+        },
+        {
+          "additions": "1",
+          "deletions": "0",
+          "file": "apps/web/package.json"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/web/public/logo_oficial_lumiar.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "apps/web/public/lumiar-logo.png"
+        },
+        {
+          "additions": "190",
+          "deletions": "0",
+          "file": "apps/web/src/hooks/useAuth.ts"
+        },
+        {
+          "additions": "2005",
+          "deletions": "0",
+          "file": "apps/web/src/main.tsx"
+        },
+        {
+          "additions": "7",
+          "deletions": "0",
+          "file": "apps/web/src/styles/global.css"
+        },
+        {
+          "additions": "2",
+          "deletions": "0",
+          "file": "apps/web/src/vite-env.d.ts"
+        },
+        {
+          "additions": "4",
+          "deletions": "0",
+          "file": "apps/web/tsconfig.json"
+        },
+        {
+          "additions": "1",
+          "deletions": "0",
+          "file": "apps/web/tsconfig.tsbuildinfo"
+        },
+        {
+          "additions": "24",
+          "deletions": "0",
+          "file": "apps/web/vite.config.ts"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "assets/logo_oficial_lumiar.png"
+        },
+        {
+          "additions": "-",
+          "deletions": "-",
+          "file": "assets/lumiar-logo.png"
+        },
+        {
+          "additions": "78",
+          "deletions": "0",
+          "file": "docker-compose.yml"
+        },
+        {
+          "additions": "375",
+          "deletions": "0",
+          "file": "docs/DEPLOYMENT.md"
+        },
+        {
+          "additions": "388",
+          "deletions": "0",
+          "file": "docs/DEVELOPMENT.md"
+        },
+        {
+          "additions": "207",
+          "deletions": "0",
+          "file": "docs/MOBILE_GUIDE.md"
+        },
+        {
+          "additions": "33",
+          "deletions": "0",
+          "file": "docs/PRODUCT_VISION.md"
+        },
+        {
+          "additions": "13",
+          "deletions": "0",
+          "file": "docs/ROADMAP.md"
+        },
+        {
+          "additions": "58",
+          "deletions": "0",
+          "file": "infra/nginx/nginx.conf"
+        },
+        {
+          "additions": "42",
+          "deletions": "0",
+          "file": "render.yaml"
+        }
+      ]
+    }
+  ]
+}
