@@ -2,285 +2,276 @@
 
 > **Acessibilidade conectada para espaços culturais, serviços e experiências.**
 
-Plataforma SaaS da Lumiar para gestão de acervos, audiodescrição, curadoria acessível e experiências digitais inclusivas.
+Plataforma SaaS da Lumiar para gestão de acervos, audiodescrição assistida por inteligência artificial, curadoria acessível e experiências digitais inclusivas conforme as diretrizes **WCAG 2.2 AA**, **eMAG 3.1** e a **Lei Brasileira de Inclusão (LBI — Lei nº 13.146/2015)**.
 
-[![Backend](https://img.shields.io/badge/backend-FastAPI-0b8f8f?style=flat-square)](apps/api)
-[![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20Vite-087ea4?style=flat-square)](apps/web)
+[![Backend](https://img.shields.io/badge/backend-FastAPI%20%7C%20Python%203.12-0b8f8f?style=flat-square)](apps/api)
+[![Frontend](https://img.shields.io/badge/frontend-React%20%2B%20Vite%20%2B%20TS-087ea4?style=flat-square)](apps/web)
+[![Acessibilidade](https://img.shields.io/badge/acessibilidade-WCAG%202.2%20AA%20%7C%20eMAG%203.1-0284c7?style=flat-square)](apps/web)
+[![Privacidade](https://img.shields.io/badge/conformidade-LGPD%20%28Lei%2013.709%29-10b981?style=flat-square)](apps/web)
 [![Deploy](https://img.shields.io/badge/deploy-Render-46e3b7?style=flat-square)](render.yaml)
-
-## Visão geral
-
-O ecossistema Lumiar possui dois produtos:
-
-| Produto | Para quem | Estado |
-| --- | --- | --- |
-| **Lumiar Cultural** | Museus e espaços culturais | Disponível |
-| **Lumiar Guia** | Orientação acessível em espaços públicos | Em desenvolvimento |
-
-O produto atual já oferece:
-
-- Gestão multi-organização com isolamento por instituição
-- Perfis de superadministrador, gestor, administrador, curador e membro
-- Acervo, espaços, obras, imagens e documentos
-- Audiodescrição assistida por IA
-- Revisão de conteúdo eMAG 3.0
-- QR Codes para obras e experiência pública mobile
-- Página pública acessível no navegador do celular, sem exigir instalação do app, com controles de audiodescrição, leitura de outros QR Codes e conversa por voz/texto com a Lumi
-- Dashboard, auditoria e controle de equipe
-- Página comercial estática em `/`
-- Páginas comerciais individuais em `/cultural` e `/guia`
-- Checkout hospedado pelo Stripe
-- Barra global de acessibilidade
-
-## Stack
-
-| Camada | Tecnologia |
-| --- | --- |
-| API | FastAPI, Python 3.12, SQLAlchemy |
-| Web | React 18, TypeScript, Vite, Lucide |
-| Mobile | Flutter, Dart |
-| Banco | PostgreSQL 16 |
-| Cache | Redis 7 |
-| Infraestrutura | Docker Compose, Nginx, GitHub Actions |
-| Pagamentos | Stripe Checkout e Billing Portal |
-
-## Estrutura
-
-```text
-apps/
-├── api/              # API FastAPI, autenticação, acervo e billing
-│   ├── app/
-│   └── requirements.txt
-├── mobile/           # Aplicativo Flutter
-└── web/              # Landing, páginas comerciais e painel React
-    ├── public/
-    └── src/
-assets/               # Materiais de marca e assets de origem
-docs/                 # Documentação de produto, desenvolvimento e deploy
-infra/                # Nginx e PostgreSQL
-docker-compose.yml
-render.yaml           # Blueprint de deploy no Render
-```
-
-## Executar localmente
-
-### Pré-requisitos
-
-- Docker e Docker Compose
-- Node.js 20+
-- Python 3.12+
-- Flutter SDK, caso trabalhe no app mobile
-
-### Com Docker
-
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-Serviços locais:
-
-| Serviço | URL |
-| --- | --- |
-| Landing e painel | http://localhost:5173 |
-| API | http://localhost:8000 |
-| Swagger | http://localhost:8000/docs |
-| PostgreSQL | localhost:5433 |
-| Redis | localhost:6379 |
-
-Para habilitar o chat da assistente Lumi, configure a chave de um provedor no `.env` do backend: `GROQ_API_KEY`, `OPENAI_API_KEY` ou `GOOGLE_API_KEY`. Defina `AI_PROVIDER=groq`, `openai` ou `google`; com `AI_PROVIDER=auto` (padrão), a API usa a primeira chave disponível na ordem Groq, OpenAI e Google. Modelos: `GROQ_AI_MODEL` (padrão `llama-3.3-70b-versatile`), `OPENAI_AI_MODEL` (padrão `gpt-4o-mini`) e `AI_MODEL` (Gemini, padrão `gemini-2.5-flash`). O tempo limite (`AI_TIMEOUT_SECONDS`) e o limite de saída do chat (`AI_CHAT_MAX_OUTPUT_TOKENS`) também podem ser definidos no `.env`. A geração de audiodescrições a partir de imagens continua usando Gemini e requer `GOOGLE_API_KEY`. Mantenha as chaves apenas no ambiente do backend; nunca as inclua no app mobile, no frontend ou no Git. Após alterar o `.env`, reinicie a API (`docker compose up -d --force-recreate api`).
-
-As imagens da página inicial podem ser gerenciadas pelo administrador do sistema no menu **Imagens da Página Inicial**. Há áreas para a imagem principal, Lumiar Cultural e Lumiar Guia. Cada envio exige texto alternativo e aceita JPEG, PNG ou WebP de até 8 MB; os arquivos ficam no armazenamento configurado para a API. Enquanto não houver imagens próprias, o site exibe ilustrações conceituais locais (não geradas por IA).
-
-### Sem Docker
-
-```bash
-# Terminal 1: API
-cd apps/api
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-
-# Terminal 2: Web
-cd apps/web
-npm ci
-npm run dev
-
-# Terminal 3: Redis, caso necessário
-redis-server
-```
-
-## Rotas comerciais
-
-| Rota | Conteúdo |
-| --- | --- |
-| `/` | Página principal da Lumiar |
-| `/cultural` | Página comercial do Lumiar Cultural |
-| `/guia` | Página comercial do Lumiar Guia |
-
-As páginas comerciais são renderizadas pelo build estático do Vite. Elas não dependem da API para abrir; login, dados e checkout são carregados somente quando necessários.
-
-## Perfis de acesso
-
-| Perfil | Escopo | Permissões principais |
-| --- | --- | --- |
-| `superadmin` | Global | Gerencia organizações, usuários e configurações de toda a plataforma |
-| `owner` | Uma organização | Administra a organização, acervo, espaços, equipe e auditoria |
-| `admin` | Uma organização | Administra acervo, espaços e usuários da organização |
-| `curator` | Uma organização | Cria, edita e revisa conteúdo cultural |
-| `member` | Uma organização | Consulta e apoia as operações permitidas pela equipe |
-
-Organizações criam seus próprios usuários `admin`, `curator` e `member`. O perfil `superadmin` é reservado à operação global e não pode ser criado por uma organização.
-
-## Stripe
-
-O checkout usa Stripe hospedado. Dados de cartão não passam pela API Lumiar.
-
-Configure no `.env` local ou nas variáveis do provedor:
-
-```env
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_CURRENCY=brl
-STRIPE_SUCCESS_URL=http://localhost:5173/?checkout=success
-STRIPE_CANCEL_URL=http://localhost:5173/?checkout=cancelled
-```
-
-Endpoints de billing:
-
-```text
-GET  /api/v1/billing/plans
-POST /api/v1/billing/checkout
-POST /api/v1/billing/portal
-POST /api/v1/billing/webhook
-```
-
-Para desenvolvimento com Stripe CLI:
-
-```bash
-stripe listen --forward-to localhost:8000/api/v1/billing/webhook
-```
-
-Use `sk_test_...` durante testes e substitua por chaves de produção somente no ambiente publicado.
-
-## Deploy no Render
-
-O arquivo [render.yaml](render.yaml) cria dois serviços:
-
-1. **`lumiar-web`**: Static Site gratuito, servido pela CDN.
-2. **`lumiar-api`**: Web Service para autenticação, dados e pagamentos.
-
-### Passos
-
-1. Faça push do projeto para um repositório no GitHub.
-2. No Render, escolha **New → Blueprint**.
-3. Conecte o repositório e confirme o `render.yaml`.
-4. No `lumiar-web`, configure:
-
-   ```env
-   VITE_API_URL=https://lumiar-api.onrender.com
-   ```
-
-5. No `lumiar-api`, configure:
-
-   ```env
-   DATABASE_URL=postgresql://...
-   SECRET_KEY=uma-chave-forte-com-no-minimo-32-caracteres
-   CORS_ORIGINS=https://lumiar-web.onrender.com
-   PUBLIC_URL=https://lumiar-api.onrender.com
-   MOBILE_APP_URL=https://lumiar-web.onrender.com/visit
-   ```
-
-6. Adicione as variáveis Stripe no serviço da API.
-
-O `render.yaml` usa `generateValue: true` para criar automaticamente a `SECRET_KEY` em uma nova implantação. Se o serviço já foi criado antes dessa configuração, abra **Environment** no serviço `lumiar-api`, adicione `SECRET_KEY` com uma string aleatória de pelo menos 32 caracteres e faça um novo deploy.
-
-O plano gratuito do Render não oferece PostgreSQL persistente. Para teste, use Neon ou Supabase e configure a `DATABASE_URL` fornecida por eles.
-
-### Build do aplicativo mobile
-
-O aplicativo visitante não recebe as variáveis do Render automaticamente. Gere o APK informando a URL pública da API:
-
-```bash
-cd apps/mobile
-flutter pub get
-flutter build apk --release --dart-define=API_BASE_URL=https://lumiar-api.onrender.com/api/v1
-```
-
-Para testar em um dispositivo conectado:
-
-```bash
-flutter run --dart-define=API_BASE_URL=https://lumiar-api.onrender.com/api/v1
-```
-
-No Render, `MOBILE_APP_URL` deve apontar para a URL pública do web app. Essa variável é usada para criar os QR Codes; depois de alterá-la, faça um novo deploy da API e gere novos QR Codes.
-
-### Armazenamento de imagens no Render
-
-As imagens de obras não devem ficar somente no disco efêmero do serviço. Configure um **Persistent Disk** no serviço `lumiar-api`, montado em `/var/data`, antes de usar uploads em produção. O Blueprint já define `STORAGE_PATH=/var/data/uploads`; sem esse disco, um restart ou novo deploy remove os arquivos, embora os registros no banco permaneçam.
-
-## Testes e validação
-
-```bash
-# API
-cd apps/api
-pytest --cov=app
-
-# Build web
-cd apps/web
-npm ci
-npm run build
-```
-
-Health check:
-
-```bash
-curl http://localhost:8000/health
-```
-
-### Reset inicial do banco
-
-Para iniciar uma base limpa, o script `apps/api/reset_production_data.py` remove organizações e todos os dados associados, preservando usuários com perfil `superadmin`. Execute-o somente após confirmar que a `DATABASE_URL` aponta para o banco correto:
-
-```bash
-cd apps/api
-python reset_production_data.py
-```
-
-O script exige a confirmação literal `RESETAR DADOS ORGANIZACIONAIS` e não deve ser executado sem backup.
-
-## Segurança
-
-- Nunca versione `.env`, tokens ou chaves Stripe.
-- Troque `SECRET_KEY` antes do deploy.
-- Use HTTPS em produção.
-- Restrinja `CORS_ORIGINS` ao domínio real do frontend.
-- Configure o webhook Stripe com assinatura `STRIPE_WEBHOOK_SECRET`.
-- O plano gratuito é adequado para demonstração, não para produção crítica.
-
-## Documentação
-
-- [Visão do produto](docs/PRODUCT_VISION.md)
-- [Desenvolvimento](docs/DEVELOPMENT.md)
-- [Deploy](docs/DEPLOYMENT.md)
-- [Guia mobile](docs/MOBILE_GUIDE.md)
-- [Roadmap](docs/ROADMAP.md)
-
-## Roadmap
-
-- [x] SaaS core e autenticação
-- [x] Gestão de organizações e equipes
-- [x] Lumiar Cultural
-- [x] Página comercial e checkout Stripe
-- [ ] Lumiar Guia
-- [ ] Billing completo e faturas
-- [ ] Observabilidade e métricas
-- [ ] Aplicativo mobile em produção
-
-## Suporte
-
-- E-mail: admin@lumiar.dev
-- API local: http://localhost:8000/docs
 
 ---
 
-**Lumiar — Acessibilidade Conectada.**
+## Sumário
+1. [Visão Geral dos Produtos](#visão-geral-dos-produtos)
+2. [Principais Inovações e Recursos do Frontend](#principais-inovações-e-recursos-do-frontend)
+3. [Tecnologias e Padrões de Arquitetura](#tecnologias-e-padrões-de-arquitetura)
+   - [Frontend](#resumo-de-tecnologias---frontend)
+   - [Backend & Inteligência Artificial](#resumo-de-tecnologias---backend--ia)
+   - [Padrões de Projeto e Arquitetura](#padrões-de-projeto-e-arquitetura)
+4. [Estrutura do Projeto](#estrutura-do-projeto)
+5. [Execução Local](#execução-local)
+6. [Rotas e Páginas da Aplicação](#rotas-e-páginas-da-aplicação)
+7. [Segurança e Conformidade LGPD](#segurança-e-conformidade-lgpd)
+8. [Deploy e Validação](#deploy-e-validação)
+
+---
+
+## Visão Geral dos Produtos
+
+O ecossistema Lumiar é estruturado em três soluções modulares integradas:
+
+| Solução | Público e Aplicação | Recursos Principais | Estado |
+| :--- | :--- | :--- | :--- |
+| **Lumiar Cultural** | Museus, galerias, centros culturais e memoriais | Gestão de acervos, audiodescrição inteligente com IA, totens táteis, QR Codes dinâmicos e curadoria multissensorial. | **Disponível** |
+| **Lumiar Guia** | Espaços públicos, parques, eventos e instituições | Orientação espacial acessível, rotas inteligentes, suporte multiformato para pessoas com deficiência física e sensorial. | **Disponível** |
+| **Lumiar Turismo** | Cidades históricas, secretarias de turismo e atrações | IA Generativa para conectar visitantes a destinos, patrimônios acessíveis e assistência virtual com a Lumi. | **Disponível** |
+
+---
+
+## Principais Inovações e Recursos do Frontend
+
+O frontend da Lumiar foi projetado seguindo rigorosamente a conformidade **WCAG 2.2 AA**, com layout moderno, responsivo e de alto impacto visual:
+
+### 1. Banner Hero Carrossel Proporcional (`LumiarHeroCarousel.tsx`)
+- Altura proporcional adaptativa (`h-[380px]` no mobile até `h-[480px]` em desktops), eliminando deformações verticais.
+- Rotação automática suave a cada 4 segundos com transição contínua.
+- Controles interativos com setas laterais e marcadores de paginação no rodapé do carrossel.
+- Textos com tipografia branca, sombras de contraste e layout responsivo.
+
+### 2. Seção "O que é o Lumiar?" (`QuemSomosSection.tsx`)
+- Arquitetura split com CSS Grid Stacking e Glassmorphism inspirada nas melhores práticas de acessibilidade (*IncluTalk*).
+- Imagem nativa em alta definição com enquadramento de cobertura (`object-cover`) e cantos arredondados (`border-radius: 28px`).
+- Destaques de texto, eyebrow com badge luminosa e citação de impacto com borda cyan `#06b6d4`.
+
+### 3. Seção de Indicadores Estatísticos de Impacto (`LumiarIndicadoresSection.tsx`)
+- **Dados Oficiais do Censo IBGE 2022**: Apresenta a urgência da acessibilidade digital e comunicacional no Brasil.
+- **Tipografia Centralizada Forte**: Título principal, texto descritivo com largura controlada (`max-w-[926px]`) e citação destacada em itálico.
+- **Grid Responsivo de 6 Indicadores Percentuais**:
+  - **7,3%**: População brasileira com algum tipo de deficiência (aprox. 1 em cada 14 pessoas).
+  - **4,0%**: Dificuldade permanente para enxergar.
+  - **2,6%**: Dificuldade para andar ou subir degraus.
+  - **1,4%**: Dificuldade para pegar objetos pequenos ou abrir tampas.
+  - **1,4%**: Limitações nas funções mentais/intelectuais.
+  - **1,3%**: Dificuldade permanente para ouvir.
+- **Animação Progressiva Inicial (Counter Animation)**:
+  - Animação de contagem suave (curva `easeOutCubic`) acionada via `IntersectionObserver` assim que os números entram no campo de visão.
+  - Totalmente adaptada à preferência `prefers-reduced-motion` do sistema e acompanhada de atributos ARIA para leitores de tela.
+
+### 4. Seção de Acessibilidade Digital & LBI (`LumiarAcessibilidadeSection.tsx`)
+- Enquadramento na **Lei Brasileira de Inclusão (LBI nº 13.146/2015)** e conexão com os **Objetivos de Desenvolvimento Sustentável da ONU**: ODS 4 (Educação Inclusiva), ODS 10 (Redução das Desigualdades) e ODS 11 (Cidades Inclusivas e Sustentáveis).
+- Cartão de mídia com o mesmo contorno superior cyan `#06b6d4`, sombras e efeitos de hover de "O que é o Lumiar?".
+- Mapeamento das âncoras `#sustentabilidade` e `#acessibilidade`.
+
+### 5. Painel Flutuante de Ferramentas Assistivas (A11y Toolbar)
+- **12 Recursos Interativos**:
+  1. Aumentar Fonte (`A+`)
+  2. Diminuir Fonte (`A-`)
+  3. Fonte para Dislexia (*OpenDyslexic*)
+  4. Modo Monocromático (Escala de cinza)
+  5. Aumentar Saturação
+  6. Diminuir Saturação
+  7. Ocultar Imagens
+  8. Modo Leitura (foco e contraste tipográfico)
+  9. Cursor Ampliado
+  10. **Libras Integrado**: Aciona diretamente o widget nativo **VLibras** na própria página do site via Shadow DOM, sem direcionar para URLs externas do governo federal.
+  11. **Leitura em Voz Alta**: Síntese de voz com a *Web Speech API* nativa do navegador (Play, Pause e Stop).
+  12. Alto Contraste (modo escuro com paleta WCAG 2.2 AA).
+- **Ícones em SVG Vetorial Padronizados**: `dislexia.svg`, `monocromatico.svg`, `ocultar_imagem.svg`, `modo_leitura.svg`, `vlibras.svg` e `saturacao.svg`.
+- **Botão "Redefinir Ajustes"**: Em azul oficial `#0284c7` com texto branco e tipografia institucional.
+- **Crédito Oficial Lumiar**: Selo "Acessibilidade Digital por" com a nova logomarca colorida do farol.
+
+### 6. Cabeçalho Unificado, Busca e Multilíngue
+- Topbar com navegação fixa: **ACESSIBILIDADE**, **O QUE É**, **PRODUTOS**, **SUSTENTABILIDADE**, **EXPERIÊNCIA**, **CONTATO**.
+- Botão **"ENTRAR"** global funcional na página inicial e nas páginas filhas (`/cultural`, `/guia`, `/turismo`).
+- Seletor de idiomas multilíngue com persistência no `localStorage` e suporte a 5 variações: Português (Brasil), Português (Portugal), Inglês (EUA), Espanhol e Francês.
+- Busca integrada por termos com rolagem e redirecionamento dinâmico.
+
+### 7. Experiência de Login e Gestão Administrativa
+- Botões **"Voltar para o portal"** e **"Entrar"** unificados no padrão visual azul `#0284c7`.
+- Logomarca colorida oficial integrada à tela de login e ao cabeçalho do menu lateral (`aside .brand`).
+- Botão **"Sair"** padronizado com o mesmo estilo, cor azul-petróleo e tipografia do botão *"Ver todos os espaços"*, redirecionando imediatamente para a raiz do portal (`/`).
+
+### 8. Rodapé Institucional e Conformidade LGPD (`LumiarFooter.tsx`)
+- Logomarca oficial do rodapé (`lumiar-logo-footer.png`), textos e links na cor branca.
+- Caixa de segurança e transparência em conformidade com a **Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)**.
+- Modal interativo da **Política de Privacidade**, detalhando finalidades de tratamento, bases legais, direitos dos titulares e canal do encarregado (DPO).
+
+---
+
+## Tecnologias e Padrões de Arquitetura
+
+### Resumo de Tecnologias - Frontend
+- **Linguagem & Framework**: React 18, TypeScript 5, Vite 5.
+- **Ícones & Vetores**: Lucide React + SVGs customizados acessíveis.
+- **Design System & Estilização**: CSS Vanilla Modularizado (`portal-moderno.css`, `landing-polish.css`, `global.css`) com classes utilitárias inspiradas no Tailwind CSS para máxima performance e controle estrito de especificidade.
+- **Acessibilidade**:
+  - Diretrizes WCAG 2.2 Nível AA e eMAG 3.1.
+  - Web Speech API (síntese de voz local para audiodescrição de tela).
+  - VLibras Plugin com inicialização nativa no Shadow DOM.
+  - Suporte completo a navegação por teclado (`focus-visible`, `outline` de 3px, Skip Links `Alt+1` e `Alt+A`).
+  - Respeito à preferência do sistema operacional por `prefers-reduced-motion`.
+- **Navegação & Roteamento**: Single Page Application (SPA) com History API nativa (`pushState`, `popstate`), sem recarregamentos desnecessários e com persistência de estado.
+
+### Resumo de Tecnologias - Backend & IA
+- **Linguagem & Framework**: Python 3.12, FastAPI (alta performance assíncrona com Starlette e Pydantic v2).
+- **Banco de Dados Relacional**: PostgreSQL 16 com ORM assíncrono SQLAlchemy 2.0.
+- **Cache & Filas**: Redis 7 para sessões e otimização de requisições.
+- **Autenticação & Segurança**: Tokens JWT seguros, hashing de senhas com `bcrypt` (Passlib), isolamento multi-tenant por chave estrangeira obrigatória (`organization_id`).
+- **Inteligência Artificial Multimodal**:
+  - **Audiodescrição Inteligente**: Google GenAI SDK (Gemini 2.5 Flash) para análise de imagens de obras de arte e monumentos, gerando textos acessíveis segundo as normas do eMAG 3.0.
+  - **Chat Assistivo Lumi**: Arquitetura multi-provedor com fallback inteligente (`auto`, `groq`, `openai`, `google`), com modelos Llama 3.3 70B, GPT-4o Mini e Gemini Flash.
+- **Billing & Assinaturas**: Stripe API (Stripe Checkout Sessions hospedadas, Webhook assinado com HMAC e Billing Portal).
+
+### Padrões de Projeto e Arquitetura
+
+```mermaid
+graph TD
+    Client[Visitante / Curador / Admin] -->|HTTPS| CDN[Vite SPA Static Frontend]
+    Client -->|API REST / Auth| API[FastAPI Backend Service]
+    API -->|Async ORM| DB[(PostgreSQL 16 Multi-tenant)]
+    API -->|Cache / Rate Limit| Redis[(Redis 7)]
+    API -->|Audiodescrição & Chat| AI[Google Gemini / Groq / OpenAI]
+    API -->|Checkout & Assinaturas| Stripe[Stripe Billing Gateway]
+    CDN -->|A11y Nativo| VLibras[VLibras Shadow DOM Widget]
+    CDN -->|Voz| Speech[Web Speech API]
+```
+
+1. **Multi-Tenancy com Isolamento Estrito**:
+   - Cada organização (museu, centro cultural ou município) opera em ambiente virtualmente isolado. Todas as consultas de acervo, espaços e curadores são vinculadas obrigatoriamente à instituição do usuário autenticado.
+2. **Role-Based Access Control (RBAC)**:
+   - Perfis hierárquicos: `superadmin` (operação global), `owner` (administrador da instituição), `admin` (gestor de acervo), `curator` (curador de obras e audiodescrições) e `member` (consulta).
+3. **Decoupled Architecture (Frontend desacoplado do Backend)**:
+   - As páginas públicas e comerciais do portal (`/`, `/cultural`, `/guia`, `/turismo`) carregam de forma instantânea via CDN e não dependem do banco de dados para abrir, proporcionando máxima pontuação no Core Web Vitals (LCP, FID/INP e CLS).
+4. **Princípio da Degradação Graciosa em Acessibilidade**:
+   - Caso um recurso assistivo avançado falhe ou não tenha suporte no navegador (ex.: falta de rede para sintetizador de voz ou VLibras), alternativas textuais, contraste e atalhos de teclado permanecem 100% funcionais.
+
+---
+
+## Estrutura do Projeto
+
+```text
+LUMIAR-APP/
+├── apps/
+│   ├── api/                      # Backend FastAPI (Python 3.12)
+│   │   ├── app/
+│   │   │   ├── api/v1/           # Rotas da API (auth, cultural, spaces, billing, etc.)
+│   │   │   ├── core/             # Configurações, segurança e conexão com banco
+│   │   │   ├── models/           # Entidades SQLAlchemy (User, Org, Item, Space, Audit)
+│   │   │   ├── schemas/          # Validações Pydantic
+│   │   │   └── services/         # Integrações IA (Gemini, Groq, OpenAI) e Stripe
+│   │   ├── requirements.txt
+│   │   └── reset_production_data.py
+│   ├── mobile/                   # Aplicativo visitante em Flutter
+│   └── web/                      # Frontend SPA em React 18 + Vite
+│       ├── public/               # Mídias, ícones SVG e logomarcas oficiais
+│       │   └── assets/           # Imagens de produtos, ODS, bandeiras e recursos A11y
+│       ├── src/
+│       │   ├── components/       # Componentes modulares
+│       │   │   ├── LumiarHeroCarousel.tsx        # Banner carrossel dinâmico
+│       │   │   ├── QuemSomosSection.tsx          # Seção O que é o Lumiar
+│       │   │   ├── LumiarIndicadoresSection.tsx  # Métricas Censo IBGE 2022
+│       │   │   ├── LumiarAcessibilidadeSection.tsx# LBI e ODS da ONU
+│       │   │   ├── LumiarExperienceCards.tsx     # Pilares de experiência
+│       │   │   ├── LumiarFooter.tsx              # Rodapé com LGPD e Privacidade
+│       │   │   └── LumiarOdsSection.tsx          # Painel interativo de ODS
+│       │   ├── styles/           # Folhas de estilo modularizadas
+│       │   │   ├── portal-moderno.css            # Estilos mestres do portal e utilitários
+│       │   │   ├── landing-polish.css            # Polimento visual de landing
+│       │   │   └── global.css                    # Variáveis de sistema e dashboard
+│       │   └── main.tsx          # Aplicação principal, rotas SPA, modal de Login e Dashboard
+├── docs/                         # Documentação técnica e de produto
+├── render.yaml                   # Infraestrutura como código (IaC) para o Render
+└── README.md
+```
+
+---
+
+## Execução Local
+
+### Pré-requisitos
+- Node.js 20+ e npm
+- Python 3.12+ (ambiente virtual `.venv`)
+- PostgreSQL 16 (ou container Docker)
+
+### Inicialização Rápida
+
+#### 1. Backend (FastAPI)
+```bash
+cd apps/api
+python -m venv .venv
+# No Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# No Linux/Mac:
+source .venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload
+```
+- API e documentação interativa: [http://127.0.0.1:8001/docs](http://127.0.0.1:8001/docs)
+
+#### 2. Frontend (React + Vite)
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+- Portal acessível no navegador: [http://localhost:5173/](http://localhost:5173/)
+
+---
+
+## Rotas e Páginas da Aplicação
+
+| Rota | Descrição |
+| :--- | :--- |
+| `/` | Portal principal: Carrossel Hero, O que é o Lumiar, Indicadores IBGE 2022, Produtos, Acessibilidade LBI/ODS, Experiência, Contato e Rodapé LGPD. |
+| `/cultural` | Página dedicada do **Lumiar Cultural**: recursos de curadoria, audiodescrição e gestão de museus. |
+| `/guia` | Página dedicada do **Lumiar Guia**: mobilidade acessível e navegação em espaços físicos. |
+| `/turismo` | Página dedicada do **Lumiar Turismo**: inteligência artificial para cidades e destinos inclusivos. |
+| `/#o-que-e` | Âncora de rolagem direta para a seção "O que é o Lumiar?". |
+| `/#sustentabilidade` | Âncora de rolagem para os compromissos com a LBI e ODS 4, 10 e 11. |
+| `Modal Login` | Tela de autenticação institucional com alternância rápida para cadastro e atalhos de acessibilidade. |
+| `Dashboard` | Painel autenticado para curadores e gestores (visão geral, acervo, espaços, organizações e auditoria). |
+
+---
+
+## Segurança e Conformidade LGPD
+
+A plataforma foi construída em observância à **Lei nº 13.709/2018 (LGPD)**:
+1. **Minimização de Dados**: Coleta estritamente os dados necessários para prestação do serviço e controle institucional.
+2. **Isolamento de Credenciais**: Chaves secretas de APIs (`OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`, `STRIPE_SECRET_KEY`) ficam armazenadas exclusivamente nas variáveis de ambiente do backend e nunca são expostas ao cliente web.
+3. **Pagamentos Seguros**: Nenhuma informação sensível de pagamento (número de cartão de crédito, CVV) trafega ou é gravada nos servidores da Lumiar; todo o fluxo é delegado ao *Stripe Checkout*.
+4. **Canal de Direitos dos Titulares**: Disponibilização do canal do encarregado de dados (`lumiar@lumiar.com.br`) e modal da Política de Privacidade acessível no rodapé em qualquer página.
+
+---
+
+## Deploy e Validação
+
+### Testes e Verificação de Tipos
+```bash
+# Validação de Tipagem do Frontend
+node apps/web/node_modules/typescript/bin/tsc --noEmit -p apps/web/tsconfig.json
+
+# Testes Unitários e de Cobertura do Backend
+cd apps/api
+pytest --cov=app
+```
+
+### Blueprint de Deploy no Render
+O arquivo [`render.yaml`](render.yaml) provisiona automaticamente os dois serviços:
+1. **`lumiar-web`**: Static Site hospedado na CDN global do Render com suporte a HTTPS e compactação gzip/brotli.
+2. **`lumiar-api`**: Web Service Python com escala automática e variáveis protegidas para conexão com banco e gateways de IA.
+
+---
+
+**© 2026 Grupo Lumiar — Acessibilidade Conectada. Todos os direitos reservados.**

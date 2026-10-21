@@ -13,14 +13,14 @@ export function LumiarExperienceCards() {
     <section 
       id="experiencia" 
       aria-labelledby="experiencia-titulo"
-      className="lumiar-section-experience w-full py-20 bg-white font-inter"
+      className="lumiar-section-experience w-full py-8 bg-white font-inter"
     >
       <div className="lumiar-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* =========================================================================
             CABEÇALHO DA SEÇÃO (TÍTULO E SUBTÍTULO NO MESMO PADRÃO DA SEÇÃO PRODUTOS)
             ========================================================================= */}
-        <div className="lumiar-section-header text-center max-w-[860px] mx-auto mb-14">
+        <div className="lumiar-section-header text-center max-w-[860px] mx-auto mb-8">
           <h2 
             id="experiencia-titulo" 
             className="text-[clamp(34px,4.6vw,54px)] font-extrabold text-slate-900 leading-[1.08] tracking-tight mb-5"

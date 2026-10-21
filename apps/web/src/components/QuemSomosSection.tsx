@@ -9,10 +9,11 @@ import { Sparkles, Quote } from 'lucide-react';
 export function QuemSomosSection() {
   return (
     <section
-      id="quem-somos"
+      id="o-que-e"
       aria-labelledby="quem-somos-titulo"
       className="quem-somos-section-wrap"
     >
+      <span id="quem-somos" style={{ position: 'absolute', top: '-70px' }} aria-hidden="true" />
       {/* Card Split Moderno (Inspiração IncluTalk): Imagem na Esquerda, Texto na Direita */}
       <div className="quem-somos-split-card">
         {/* Lado Esquerdo: Imagem Nativa com Enquadramento e Bordas Arredondadas */}

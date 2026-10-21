@@ -5,4 +5,5 @@ __pycache__/
 *.pyc
 apps/api/uploads/
 repo_git_backup.bundle
-*.db
+*.db
+*.tsbuildinfo

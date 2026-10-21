@@ -15,7 +15,10 @@ import './styles/landing-polish.css';
 import './styles/portal-moderno.css';
 import { QuemSomosSection } from './components/QuemSomosSection';
 import { LumiarExperienceCards } from './components/LumiarExperienceCards';
-import { LumiarOdsSection } from './components/LumiarOdsSection';
+import { LumiarAcessibilidadeSection } from './components/LumiarAcessibilidadeSection';
+import { LumiarIndicadoresSection } from './components/LumiarIndicadoresSection';
+import { LumiarHeroCarousel } from './components/LumiarHeroCarousel';
+import { LumiarFooter } from './components/LumiarFooter';
 
 const API = import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : '';
 
@@ -135,9 +138,12 @@ function Login({ onLogin, onBack }: { onLogin: (t: string) => void; onBack?: () 
         <div className="login-form-inner">
           <div className="login-brand-header">
             <img
-              src="/logo_oficial_lumiar.png"
+              src="/projeto-lumiar-color.png"
               alt="Lumiar - Acessibilidade Conectada"
               className="login-brand-logo"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/projeto-lumiar-color.jpg';
+              }}
             />
             <h2 className="login-title">
               {mode === 'login' ? 'Entrar na plataforma' : 'Cadastrar na plataforma'}
@@ -428,12 +434,74 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
   };
 
   const triggerVLibras = () => {
-    const btn = document.querySelector('[vw-access-button]') as HTMLElement;
-    if (btn) {
-      btn.click();
-    } else {
-      alert('VLibras gov.br: O recurso de tradução em Libras oficial está ativo e disponível na barra lateral.');
-    }
+    // Fecha o modal de acessibilidade para dar visão total ao VLibras na página
+    setOpen(false);
+
+    // Dispara a funcionalidade VLibras integrada diretamente na página
+    setTimeout(() => {
+      // 1. Tenta API oficial do VLibras moderno (window.VLibrasWidget.open)
+      const vWidget = (window as any).VLibrasWidget;
+      if (vWidget && typeof vWidget.open === 'function') {
+        try {
+          vWidget.open();
+          return;
+        } catch (e) {
+          console.warn('Erro ao chamar VLibrasWidget.open():', e);
+        }
+      }
+
+      // 2. Se o botão oficial do VLibras Widget estiver no objeto
+      if (vWidget && vWidget.initBtn && typeof vWidget.initBtn.click === 'function') {
+        try {
+          vWidget.initBtn.click();
+          return;
+        } catch (e) {
+          console.warn('Erro ao clicar em VLibrasWidget.initBtn:', e);
+        }
+      }
+
+      // 3. Procura no Shadow DOM do wrapper oficial do VLibras moderno (#vlibras-access-wrapper)
+      const shadowWrapper = document.getElementById('vlibras-access-wrapper');
+      if (shadowWrapper && shadowWrapper.shadowRoot) {
+        const shadowBtn = shadowWrapper.shadowRoot.querySelector('#vlibras-button') as HTMLElement;
+        if (shadowBtn) {
+          shadowBtn.click();
+          return;
+        }
+      }
+
+      // 4. Se o app root já foi carregado, ativa o dataset
+      const appRoot = document.getElementById('vlibras-app-root');
+      if (appRoot) {
+        appRoot.dataset.active = 'true';
+      }
+
+      // 5. Instanciação caso o widget ainda não tenha sido iniciado
+      if ((window as any).VLibras && !(window as any).vlibrasWidgetInstance) {
+        try {
+          (window as any).vlibrasWidgetInstance = new (window as any).VLibras.Widget('https://vlibras.gov.br/app');
+        } catch (err) {
+          console.warn('Inicialização VLibras:', err);
+        }
+      }
+
+      // 6. Procura pelos seletores tradicionais / legados do VLibras
+      const btn = (
+        document.querySelector('[vw-access-button]') ||
+        document.querySelector('.vw-access-button') ||
+        document.querySelector('.access-button') ||
+        document.querySelector('[vw] [vw-access-button]') ||
+        document.querySelector('#vlibras-button')
+      ) as HTMLElement;
+
+      if (btn) {
+        btn.click();
+        const inner = (btn.querySelector('img') || btn.firstElementChild) as HTMLElement;
+        if (inner && inner !== btn) {
+          inner.click();
+        }
+      }
+    }, 50);
   };
 
   return (
@@ -505,7 +573,9 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 onClick={() => updateSetting('dyslexiaFont', !settings.dyslexiaFont)}
                 aria-pressed={settings.dyslexiaFont}
               >
-                <span className="lumiar-a11y-item-icon"><Type size={24} /></span>
+                <span className="lumiar-a11y-item-icon">
+                  <img src="/assets/dislexia.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/dislexia.svg'; }} />
+                </span>
                 <span className="lumiar-a11y-item-label">Fonte para Dislexia</span>
               </button>
 
@@ -516,7 +586,9 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 onClick={() => updateSetting('grayscale', !settings.grayscale)}
                 aria-pressed={settings.grayscale}
               >
-                <span className="lumiar-a11y-item-icon"><Palette size={24} /></span>
+                <span className="lumiar-a11y-item-icon">
+                  <img src="/assets/monocromatico.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/monocromatico.svg'; }} />
+                </span>
                 <span className="lumiar-a11y-item-label">Monocromático</span>
               </button>
 
@@ -555,7 +627,9 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 onClick={() => updateSetting('hideImages', !settings.hideImages)}
                 aria-pressed={settings.hideImages}
               >
-                <span className="lumiar-a11y-item-icon"><ImageIcon size={24} /></span>
+                <span className="lumiar-a11y-item-icon">
+                  <img src="/assets/ocultar_imagem.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/ocultar_imagem.svg'; }} />
+                </span>
                 <span className="lumiar-a11y-item-label">Esconder Imagens</span>
               </button>
 
@@ -566,7 +640,9 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 onClick={() => updateSetting('readingMode', !settings.readingMode)}
                 aria-pressed={settings.readingMode}
               >
-                <span className="lumiar-a11y-item-icon"><LayoutDashboard size={24} /></span>
+                <span className="lumiar-a11y-item-icon">
+                  <img src="/assets/modo_leitura.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/modo_leitura.svg'; }} />
+                </span>
                 <span className="lumiar-a11y-item-label">Modo Leitura</span>
               </button>
 
@@ -589,7 +665,7 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 aria-label="Ativar VLibras gov.br"
               >
                 <span className="lumiar-a11y-item-icon">
-                  <img src="/assets/icone-acessibilidade-libras.png" alt="" style={{ height: '30px', objectFit: 'contain' }} />
+                  <img src="/assets/vlibras.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/vlibras.svg'; }} />
                 </span>
                 <span className="lumiar-a11y-item-label">Libras</span>
               </button>
@@ -615,7 +691,9 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
                 onClick={() => updateSetting('highContrast', !settings.highContrast)}
                 aria-pressed={settings.highContrast}
               >
-                <span className="lumiar-a11y-item-icon"><Contrast size={24} /></span>
+                <span className="lumiar-a11y-item-icon">
+                  <img src="/assets/saturacao.svg" alt="" onError={e => { (e.currentTarget as HTMLImageElement).src = '/saturacao.svg'; }} />
+                </span>
                 <span className="lumiar-a11y-item-label">Alto Contraste</span>
               </button>
             </div>
@@ -623,7 +701,14 @@ function AccessibilityToolbar({ externalOpen, onToggleExternal }: { externalOpen
             {/* Cartão de crédito Lumiar */}
             <div className="lumiar-a11y-credit-card">
               <span className="lumiar-a11y-credit-text">Acessibilidade Digital por</span>
-              <img className="lumiar-a11y-credit-logo" src="/logo_oficial_lumiar.png" alt="Lumiar Acessibilidade Conectada" />
+              <img 
+                className="lumiar-a11y-credit-logo" 
+                src="/assets/lumiar-a11y-credit-logo.png" 
+                alt="Lumiar - Acessibilidade Conectada" 
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/lumiar-a11y-credit-logo.png';
+                }}
+              />
             </div>
           </div>
         </div>
@@ -718,9 +803,9 @@ function LumiarUnifiedHeader({
   return (
     <header className="lumiar-header-unified" role="banner">
       <div className="lumiar-header-unified-inner">
-        {/* LINHA 1: Topo */}
-        <div className="lumiar-header-row-1">
-          {/* Logo Lumiar */}
+        {/* LINHA 1: Top Navigation Bar exatamente conforme menu.png */}
+        <div className="lumiar-header-nav-row">
+          {/* Logomarca oficial colorida */}
           <a
             href="/"
             className="lumiar-header-brand"
@@ -728,132 +813,69 @@ function LumiarUnifiedHeader({
             aria-label="Lumiar Acessibilidade Conectada - Página Inicial"
           >
             <img
-              src="/logo_oficial_lumiar.png"
+              src="/projeto-lumiar-color.png"
               alt="Lumiar - Acessibilidade Conectada"
-              className="lumiar-header-logo"
+              className="lumiar-header-logo-color"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = '/projeto-lumiar-color.jpg';
+              }}
             />
           </a>
 
-          {/* Ações superiores alinhadas */}
-          <div className="lumiar-header-top-actions">
-            {/* Palavra Acessibilidade clicável */}
+          {/* Menu de Navegação Horizontal: ACESSIBILIDADE + Links das seções */}
+          <nav aria-label="Menu principal de navegação" className="lumiar-header-nav-wrap">
+            <ul className="lumiar-nav-links-unified">
+              <li>
+                <button
+                  type="button"
+                  className="lumiar-nav-a11y-link"
+                  onClick={onOpenA11yInfo}
+                  aria-label="Informações sobre Acessibilidade Lumiar (abre painel informativo)"
+                >
+                  ACESSIBILIDADE
+                </button>
+              </li>
+              <li>
+                <a href={`?lang=${lang}#o-que-e`} className="lumiar-nav-item-link">
+                  O QUE É
+                </a>
+              </li>
+              <li>
+                <a href={`?lang=${lang}#produtos`} className="lumiar-nav-item-link">
+                  PRODUTOS
+                </a>
+              </li>
+              <li>
+                <a href={`?lang=${lang}#sustentabilidade`} className="lumiar-nav-item-link">
+                  SUSTENTABILIDADE
+                </a>
+              </li>
+              <li>
+                <a href={`?lang=${lang}#experiencia`} className="lumiar-nav-item-link">
+                  EXPERIÊNCIA
+                </a>
+              </li>
+              <li>
+                <a href={`?lang=${lang}#contato`} className="lumiar-nav-item-link">
+                  CONTATO
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          {/* Lado Direito: Botão ENTRAR + Seletor de Idioma */}
+          <div className="lumiar-header-right-actions">
             <button
               type="button"
-              className="lumiar-a11y-word-btn"
-              onClick={onOpenA11yInfo}
-              aria-label="Informações sobre Acessibilidade Lumiar"
+              className="lumiar-btn-entrar"
+              onClick={onOpenLogin}
+              aria-label="Entrar no sistema Lumiar"
             >
-              Acessibilidade
+              ENTRAR
             </button>
 
-            {/* Ícones de atalhos de acessibilidade */}
-            <div className="lumiar-header-a11y-tools" aria-label="Ferramentas rápidas de acessibilidade">
-              {/* Ícone acessibilidade.jpg (abre menu de acessibilidade) */}
-              <button
-                type="button"
-                className="lumiar-icon-a11y-modal-btn"
-                onClick={onToggleA11y}
-                title="Abrir painel de recursos de acessibilidade"
-                aria-label="Abrir painel de acessibilidade"
-              >
-                <img src="/assets/acessibilidade.jpg" alt="Acessibilidade" />
-              </button>
-
-              {/* VLibras */}
-              <button
-                type="button"
-                className="lumiar-icon-libras-btn"
-                title="Ativar VLibras (Língua Brasileira de Sinais)"
-                aria-label="Ativar VLibras"
-                onClick={() => {
-                  const btn = document.querySelector('[vw-access-button]') as HTMLElement;
-                  if (btn) btn.click();
-                }}
-              >
-                <img src="/assets/libras.svg" alt="Libras" />
-              </button>
-
-              {/* A+ A- A */}
-              <button
-                type="button"
-                className="lumiar-font-shortcut-btn"
-                title="Aumentar fonte"
-                aria-label="Aumentar fonte"
-                onClick={() => {
-                  const cur = parseFloat(document.body.style.getPropertyValue('--a11y-font-scale') || '1');
-                  const next = Math.min(1.5, cur + 0.1);
-                  document.body.style.setProperty('--a11y-font-scale', String(next));
-                }}
-              >
-                A+
-              </button>
-              <button
-                type="button"
-                className="lumiar-font-shortcut-btn"
-                title="Diminuir fonte"
-                aria-label="Diminuir fonte"
-                onClick={() => {
-                  const cur = parseFloat(document.body.style.getPropertyValue('--a11y-font-scale') || '1');
-                  const next = Math.max(0.85, cur - 0.1);
-                  document.body.style.setProperty('--a11y-font-scale', String(next));
-                }}
-              >
-                A-
-              </button>
-              <button
-                type="button"
-                className="lumiar-font-shortcut-btn"
-                title="Tamanho normal de fonte"
-                aria-label="Restaurar tamanho de fonte normal"
-                onClick={() => {
-                  document.body.style.setProperty('--a11y-font-scale', '1');
-                }}
-              >
-                A
-              </button>
-
-              {/* Monocromático / Saturação */}
-              <button
-                type="button"
-                className="lumiar-contrast-shortcut-btn"
-                title="Alternar monocromático (saturação/escala de cinza)"
-                aria-label="Alternar monocromático"
-                onClick={() => {
-                  document.body.classList.toggle('a11y-grayscale');
-                }}
-              >
-                ◐
-              </button>
-            </div>
-
-            {/* Separador traço | */}
-            <span className="lumiar-header-divider" aria-hidden="true" />
-
-            {/* Redes sociais com ícones circulares proporcionais */}
-            <div className="lumiar-header-socials" aria-label="Redes sociais do Lumiar">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="lumiar-social-link" aria-label="Instagram" title="Instagram">
-                <img src="/assets/instagram.png" alt="Instagram" className="lumiar-social-img" />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="lumiar-social-link" aria-label="YouTube" title="YouTube">
-                <img src="/assets/youtube.png" alt="YouTube" className="lumiar-social-img" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="lumiar-social-link" aria-label="LinkedIn" title="LinkedIn">
-                <img src="/assets/linkedin.png" alt="LinkedIn" className="lumiar-social-img" />
-              </a>
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="lumiar-social-link" aria-label="TikTok" title="TikTok">
-                <img src="/assets/tiktok.png" alt="TikTok" className="lumiar-social-img" />
-              </a>
-              <a href="https://wa.me/" target="_blank" rel="noreferrer" className="lumiar-social-link" aria-label="WhatsApp" title="WhatsApp">
-                <img src="/assets/whatsapp.png" alt="WhatsApp" className="lumiar-social-img" />
-              </a>
-            </div>
-
-            {/* Separador traço | */}
-            <span className="lumiar-header-divider" aria-hidden="true" />
-
-            {/* Seletor de Idioma com Globo e padrão textual do menu */}
             <div className="lumiar-lang-trigger-group">
-              <img src="/assets/icone-globo.png" alt="" className="lumiar-globe-icon" aria-hidden="true" />
+              <Globe size={20} className="lumiar-globe-icon" aria-hidden="true" />
               <button
                 type="button"
                 className="lumiar-lang-pill-btn"
@@ -861,51 +883,31 @@ function LumiarUnifiedHeader({
                 aria-haspopup="dialog"
                 aria-label={`Idioma selecionado: ${currentLang.primary} ${currentLang.sub}. Clique para alterar o idioma.`}
               >
-                <img src={currentLang.flag} alt="" />
-                <span>{currentLang.badge}</span>
+                <img src={currentLang.flag} alt="" className="lumiar-lang-flag-circle" />
+                <span className="lumiar-lang-text">{currentLang.badge}</span>
                 <ChevronDown size={14} strokeWidth={2.5} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* LINHA 2: Menu de Navegação + ENTRAR + Solicite uma proposta */}
-        <div className="lumiar-header-row-2">
-          <nav aria-label="Menu de seções do projeto Lumiar">
-            <ul className="lumiar-nav-links-black">
-              <li><a href="#quem-somos" className="lumiar-nav-item-link">QUEM SOMOS</a></li>
-              <li><a href="#produtos" className="lumiar-nav-item-link">PRODUTOS</a></li>
-              <li><a href="#sustentabilidade" className="lumiar-nav-item-link">SUSTENTABILIDADE</a></li>
-              <li><a href="#experiencia" className="lumiar-nav-item-link">EXPERIÊNCIA</a></li>
-              <li><a href="#contato" className="lumiar-nav-item-link">CONTATO</a></li>
-            </ul>
-          </nav>
-
-          <div className="lumiar-header-cta-group">
-            <button
-              type="button"
-              className="lumiar-btn-entrar"
-              onClick={onOpenLogin}
-              aria-label="Entrar no sistema"
-            >
-              ENTRAR
-            </button>
-            <button
-              type="button"
-              className="lumiar-btn-proposta"
-              onClick={onOpenProposal}
-              aria-label="Solicite uma proposta e conheça os planos"
-            >
-              <MessageCircle size={18} />
-              Solicite uma proposta
-            </button>
-          </div>
+        {/* LINHA 2: Solicite uma proposta alinhado à direita abaixo de ENTRAR */}
+        <div className="lumiar-header-proposal-row">
+          <button
+            type="button"
+            className="lumiar-btn-proposta-pill"
+            onClick={onOpenProposal}
+            aria-label="Solicite uma proposta e conheça os planos"
+          >
+            <MessageCircle size={18} strokeWidth={2.2} />
+            <span>Solicite uma proposta</span>
+          </button>
         </div>
 
-        {/* LINHA 3: Opção de Busca conforme menu_geral.png */}
-        <div className="lumiar-header-row-3">
+        {/* LINHA 3: Barra de Pesquisa Completa */}
+        <div className="lumiar-header-search-row-unified">
           <form className="lumiar-header-search-form" onSubmit={onSearchSubmit} role="search">
-            <Search className="lumiar-header-search-icon" size={24} aria-hidden="true" />
+            <Search className="lumiar-header-search-icon" size={22} aria-hidden="true" />
             <div className="lumiar-header-search-input-wrap">
               <input
                 type="search"
@@ -966,24 +968,38 @@ function LumiarUnifiedHeader({
 function LumiarFixedTopbar({
   onToggleA11y,
   lang,
-  setLang
+  setLang,
+  onOpenLogin,
+  onNavigateTo,
+  searchQuery,
+  setSearchQuery,
+  onSearchSubmit,
+  onOpenProposal,
+  onOpenA11yInfo
 }: {
   onToggleA11y: () => void;
   lang: SupportedLang;
   setLang: (l: SupportedLang) => void;
+  onOpenLogin?: () => void;
+  onNavigateTo?: (path: string) => void;
+  searchQuery?: string;
+  setSearchQuery?: (q: string) => void;
+  onSearchSubmit?: (e: React.FormEvent) => void;
+  onOpenProposal?: () => void;
+  onOpenA11yInfo?: () => void;
 }) {
   return (
     <LumiarUnifiedHeader
       onToggleA11y={onToggleA11y}
       lang={lang}
       setLang={setLang}
-      searchQuery=""
-      setSearchQuery={() => {}}
-      onSearchSubmit={e => e.preventDefault()}
-      onOpenLogin={() => {}}
-      onNavigateTo={() => { window.location.href = '/'; }}
-      onOpenProposal={() => { window.location.href = '/#produtos'; }}
-      onOpenA11yInfo={onToggleA11y}
+      searchQuery={searchQuery || ''}
+      setSearchQuery={setSearchQuery || (() => {})}
+      onSearchSubmit={onSearchSubmit || (e => e.preventDefault())}
+      onOpenLogin={onOpenLogin || (() => {})}
+      onNavigateTo={onNavigateTo || (() => { window.location.href = '/'; })}
+      onOpenProposal={onOpenProposal || (() => { window.location.href = '/#produtos'; })}
+      onOpenA11yInfo={onOpenA11yInfo || onToggleA11y}
     />
   );
 }
@@ -1121,6 +1137,13 @@ function SalesPage({ onLogin }: { onLogin: (t: string) => void }) {
         onToggleA11y={() => setA11yOpen(p => !p)}
         lang={lang}
         setLang={setLang}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchSubmit={handleSearchSubmit}
+        proposalModalOpen={proposalModalOpen}
+        setProposalModalOpen={setProposalModalOpen}
+        a11yInfoModalOpen={a11yInfoModalOpen}
+        setA11yInfoModalOpen={setA11yInfoModalOpen}
       />
     );
   }
@@ -1282,10 +1305,21 @@ function SalesPage({ onLogin }: { onLogin: (t: string) => void }) {
           </div>
         )}
 
+
+        {/* ==============================================================================
+            2. CARROSSEL DE IMAGENS HERO (SLIDER DE FUNDO DINÂMICO)
+            ============================================================================== */}
+        <LumiarHeroCarousel onOpenProposal={() => setProposalModalOpen(true)} />
+
         {/* ==============================================================================
             3. SEÇÃO QUEM SOMOS (CSS Grid Stacking & Glassmorphism - WCAG 2.2 AA)
             ============================================================================== */}
         <QuemSomosSection />
+
+        {/* ==============================================================================
+            INDICADORES ESTATÍSTICOS DE IMPACTO E INCLUSÃO DIGITAL (IBGE 2022)
+            ============================================================================== */}
+        <LumiarIndicadoresSection />
 
         {/* ==============================================================================
             4. SEÇÃO PRODUTOS LUMIAR (CARDS COLORIDOS)
@@ -1371,9 +1405,9 @@ function SalesPage({ onLogin }: { onLogin: (t: string) => void }) {
         </section>
 
         {/* ==============================================================================
-            5. SEÇÃO OBJETIVOS DE DESENVOLVIMENTO SUSTENTÁVEL (ODS & ESG)
+            5. SEÇÃO ACESSIBILIDADE DIGITAL & LBI (DIREITO À INFORMAÇÃO)
             ============================================================================== */}
-        <LumiarOdsSection />
+        <LumiarAcessibilidadeSection />
 
         {/* ==============================================================================
             6. SEÇÃO EXPERIÊNCIA & DIREITO À ACESSIBILIDADE (GRID STACKING WCAG 2.2 AA)
@@ -1407,25 +1441,7 @@ function SalesPage({ onLogin }: { onLogin: (t: string) => void }) {
       {/* ==============================================================================
           8. RODAPÉ INSTITUCIONAL (FOOTER)
           ============================================================================== */}
-      <footer className="lumiar-footer">
-        <div className="lumiar-footer-inner">
-          <div className="lumiar-footer-brand">
-            <img src="/logo_oficial_lumiar.png" alt="Lumiar" className="lumiar-footer-logo" />
-            <span className="lumiar-footer-tagline">Grupo Lumiar - Acessibilidade Conectada</span>
-          </div>
-
-          <nav style={{ display: 'flex', gap: '20px' }} aria-label="Navegação secundária do rodapé">
-            <a href="/cultural" onClick={e => { e.preventDefault(); navigateTo('/cultural'); }} style={{ color: '#cbd5e1', textDecoration: 'none' }}>Lumiar Cultural</a>
-            <a href="/guia" onClick={e => { e.preventDefault(); navigateTo('/guia'); }} style={{ color: '#cbd5e1', textDecoration: 'none' }}>Lumiar Guia</a>
-            <a href="/turismo" onClick={e => { e.preventDefault(); navigateTo('/turismo'); }} style={{ color: '#cbd5e1', textDecoration: 'none' }}>Lumiar Turismo</a>
-            <a href="mailto:contato@lumiar.dev" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contato</a>
-          </nav>
-        </div>
-
-        <div className="lumiar-footer-copy">
-          Copyright © 2026 Grupo Lumiar - Todos os direitos reservados. / All rights reserved.
-        </div>
-      </footer>
+      <LumiarFooter onNavigateTo={navigateTo} />
 
       {/* Modal de Checkout */}
       {checkoutPlan && (
@@ -1473,7 +1489,14 @@ function ProductSalesPage({
   a11yOpen,
   onToggleA11y,
   lang,
-  setLang
+  setLang,
+  searchQuery,
+  setSearchQuery,
+  onSearchSubmit,
+  proposalModalOpen,
+  setProposalModalOpen,
+  a11yInfoModalOpen,
+  setA11yInfoModalOpen
 }: any) {
   const isCultural = path === '/cultural';
   const isGuia = path === '/guia';
@@ -1488,24 +1511,31 @@ function ProductSalesPage({
         onToggleA11y={onToggleA11y}
         lang={lang}
         setLang={setLang}
+        onOpenLogin={onLogin}
+        onNavigateTo={onNavigateTo}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchSubmit={onSearchSubmit}
+        onOpenProposal={() => setProposalModalOpen && setProposalModalOpen(true)}
+        onOpenA11yInfo={() => setA11yInfoModalOpen && setA11yInfoModalOpen(true)}
       />
 
       <main className="lumiar-product-page-container">
         {/* Breadcrumb e botão Voltar */}
         <div className="lumiar-breadcrumb-bar">
+          <button type="button" className="lumiar-btn-back" onClick={onNavigateHome}>
+            <ChevronLeft size={18} color="#ffffff" /> Voltar
+          </button>
+
           <nav aria-label="Trilha de navegação (Breadcrumbs)" className="lumiar-breadcrumb-nav">
             <a href="/" onClick={e => { e.preventDefault(); onNavigateHome(); }} className="lumiar-breadcrumb-link">
               Página Inicial
             </a>
-            {' / '}
-            <span>
+            <span aria-hidden="true" style={{ color: '#94a3b8', margin: '0 4px' }}>/</span>
+            <span className="lumiar-breadcrumb-current">
               {isCultural ? 'Página Lumiar Cultural' : isGuia ? 'Lumiar Guia' : 'Lumiar Turismo'}
             </span>
           </nav>
-
-          <button type="button" className="lumiar-btn-back" onClick={onNavigateHome}>
-            <ChevronLeft size={16} /> Voltar
-          </button>
         </div>
 
         {/* Título Principal */}
@@ -1519,9 +1549,12 @@ function ProductSalesPage({
             <div className="lumiar-detail-media-wrap">
               <span className="lumiar-detail-badge">CULTURA E ACESSIBILIDADE</span>
               <img
-                src="/assets/modelos/museu-do-ipiranga.png"
-                alt="Fachada histórica do Museu do Ipiranga"
+                src="/assets/Lumiar_cultural.png"
+                alt="Lumiar Cultural: visitante cego com óculos escuros e bengala guia caminhando sobre piso tátil em museu, acessando totem com QR Code e tecnologia assistiva."
                 className="lumiar-detail-img"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/Lumiar_cultural.png';
+                }}
               />
             </div>
 
@@ -1593,10 +1626,14 @@ function ProductSalesPage({
             </div>
 
             <div className="lumiar-detail-media-wrap">
+              <span className="lumiar-detail-badge">GUIA E ORIENTAÇÃO</span>
               <img
-                src="/assets/guia-mapa-acessivel.png"
-                alt="Ilustração do mapa de orientação acessível com pontos de interesse"
+                src="/assets/Lumiar_guia.png"
+                alt="Lumiar Guia: mulher usuária de cadeira de rodas sorrindo enquanto utiliza o aplicativo Lumiar Guia no celular em espaço acessível com mesa e cardápio em Braille."
                 className="lumiar-detail-img"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/Lumiar_guia.png';
+                }}
               />
             </div>
           </article>
@@ -1605,6 +1642,8 @@ function ProductSalesPage({
         {isTurismo && (
           <article className="lumiar-detail-card">
             <div className="lumiar-detail-content">
+              <span className="lumiar-detail-index">03 / TURISMO ACESSÍVEL & IA</span>
+              <h2 className="lumiar-detail-title">Lumiar Turismo</h2>
               <p className="lumiar-detail-desc" style={{ fontSize: '17px', color: '#1e293b' }}>
                 Uma solução inteligente que utiliza a Inteligência Artificial Generativa para conectar pessoas a destinos turísticos, pontos de interesse e informações sobre acessibilidade, promovendo experiências de viagem mais inclusivas, autônomas e seguras.
               </p>
@@ -1635,10 +1674,14 @@ function ProductSalesPage({
             </div>
 
             <div className="lumiar-detail-media-wrap">
+              <span className="lumiar-detail-badge">DESTINOS INTELIGENTES</span>
               <img
-                src="/assets/turismo-acessivel-cadeirante.png"
-                alt="Turista em cadeira de rodas na rampa acessível em frente ao Museu de Arte e Cultura"
+                src="/assets/Lumiar_turismo.jpg"
+                alt="Lumiar Turismo: smartphone exibindo leitor de QR Code e assistente com tradução em Libras em frente a totem turístico histórico."
                 className="lumiar-detail-img"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/Lumiar_turismo.jpg';
+                }}
               />
             </div>
           </article>
@@ -1646,21 +1689,7 @@ function ProductSalesPage({
       </main>
 
       {/* Rodapé da Página Secundária */}
-      <footer className="lumiar-footer">
-        <div className="lumiar-footer-inner">
-          <div className="lumiar-footer-brand">
-            <img src="/logo_oficial_lumiar.png" alt="Lumiar" className="lumiar-footer-logo" />
-            <span className="lumiar-footer-tagline">Grupo Lumiar - Acessibilidade Conectada</span>
-          </div>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <a href="/" onClick={e => { e.preventDefault(); onNavigateHome(); }} style={{ color: '#cbd5e1', textDecoration: 'none' }}>Voltar ao Início</a>
-            <a href="mailto:contato@lumiar.dev" style={{ color: '#cbd5e1', textDecoration: 'none' }}>Contato</a>
-          </div>
-        </div>
-        <div className="lumiar-footer-copy">
-          Copyright © 2026 Grupo Lumiar - Todos os direitos reservados. / All rights reserved.
-        </div>
-      </footer>
+      <LumiarFooter onNavigateTo={onNavigateTo} />
 
       {/* Modal de Checkout */}
       {checkoutPlan && (
@@ -1681,6 +1710,127 @@ function ProductSalesPage({
               {loading ? 'Abrindo checkout...' : 'Continuar para pagamento seguro'}
             </button>
           </form>
+        </div>
+      )}
+
+      {/* Modal de Proposta Comercial */}
+      {proposalModalOpen && (
+        <div className="lumiar-proposal-modal-overlay" onClick={() => setProposalModalOpen(false)} role="dialog" aria-modal="true" aria-labelledby="proposta-title-prod">
+          <div className="lumiar-proposal-modal-card" onClick={e => e.stopPropagation()}>
+            <button
+              type="button"
+              className="lumiar-proposal-close-btn"
+              onClick={() => setProposalModalOpen(false)}
+              aria-label="Fechar modal"
+            >
+              <X size={20} />
+            </button>
+
+            <span style={{ color: '#0284c7', fontWeight: 800, fontSize: '12px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              Planos & Propostas
+            </span>
+            <h2 id="proposta-title-prod" style={{ margin: '8px 0 12px', fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>
+              Solicite uma proposta para sua instituição
+            </h2>
+            <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: 1.6, margin: '0 0 20px' }}>
+              Soluções completas para museus, memoriais e cidades turísticas com acessibilidade nativa e inteligência artificial. Conheça nossos planos:
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+              {salesPlans.map(plan => (
+                <div
+                  key={plan.id}
+                  style={{
+                    padding: '14px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #e2e8f0',
+                    backgroundColor: '#f8fafc',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onClick={() => {
+                    onCheckout(plan);
+                    setProposalModalOpen(false);
+                  }}
+                >
+                  <div style={{ fontWeight: 800, color: '#0f172a', fontSize: '15px' }}>{plan.product}</div>
+                  <div style={{ color: '#0284c7', fontWeight: 700, fontSize: '14px', marginTop: '4px' }}>{plan.price}</div>
+                  <div style={{ color: '#64748b', fontSize: '12px', marginTop: '6px' }}>{plan.description}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setProposalModalOpen(false);
+                  onNavigateHome();
+                }}
+                className="lumiar-btn-proposta"
+                style={{ padding: '8px 18px', fontSize: '14px' }}
+              >
+                Ver todos os produtos
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Informações sobre Acessibilidade */}
+      {a11yInfoModalOpen && (
+        <div className="lumiar-info-modal-overlay" onClick={() => setA11yInfoModalOpen(false)} role="dialog" aria-modal="true" aria-labelledby="a11y-info-title-prod">
+          <div className="lumiar-proposal-modal-card" onClick={e => e.stopPropagation()}>
+            <button
+              type="button"
+              className="lumiar-proposal-close-btn"
+              onClick={() => setA11yInfoModalOpen(false)}
+              aria-label="Fechar modal"
+            >
+              <X size={20} />
+            </button>
+
+            <span style={{ color: '#0284c7', fontWeight: 800, fontSize: '12px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              Diretrizes de Acessibilidade
+            </span>
+            <h2 id="a11y-info-title-prod" style={{ margin: '8px 0 12px', fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>
+              Compromisso Lumiar com a Inclusão Digital
+            </h2>
+            <p style={{ color: '#475569', fontSize: '14.5px', lineHeight: 1.6, margin: '0 0 16px' }}>
+              A plataforma Lumiar foi projetada desde a primeira linha de código para atender integralmente às diretrizes <strong>WCAG 2.2 Nível AA</strong> e aos pilares da <strong>Lei Brasileira de Inclusão (LBI nº 13.146/2015)</strong>.
+            </p>
+
+            <div style={{ backgroundColor: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
+              <ul style={{ margin: 0, paddingLeft: '20px', color: '#334155', fontSize: '13.5px', lineHeight: 1.8 }}>
+                <li><strong>VLibras integrado:</strong> Tradução em tempo real para a Língua Brasileira de Sinais.</li>
+                <li><strong>Ajustes de texto:</strong> Atalhos diretos para aumento (A+), redução (A-) e tamanho padrão (A).</li>
+                <li><strong>Modo Monocromático:</strong> Alternância de saturação e contraste para maior conforto visual.</li>
+                <li><strong>Navegação sem barreiras:</strong> Suporte total a leitores de tela e navegação por teclado.</li>
+              </ul>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setA11yInfoModalOpen(false);
+                  onToggleA11y();
+                }}
+                className="lumiar-btn-entrar"
+                style={{ padding: '8px 18px', fontSize: '13.5px' }}
+              >
+                Abrir painel de ferramentas
+              </button>
+              <button
+                type="button"
+                onClick={() => setA11yInfoModalOpen(false)}
+                className="lumiar-btn-proposta"
+                style={{ padding: '8px 18px', fontSize: '13.5px' }}
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1901,6 +2051,7 @@ function App() {
     localStorage.removeItem('lumiar_token');
     setCurrentUser(null);
     setToken('');
+    window.location.href = '/';
   };
 
   const currentOrgName = data?.organization || (Array.isArray(data) ? data.find((o: any) => o.is_current)?.name : null) || 'Museu Ativo';
@@ -1910,7 +2061,13 @@ function App() {
       <div className="shell">
       <aside>
         <div className="brand">
-          <img src="/lumiar-logo.png" alt="Lumiar Cultural" />
+          <img
+            src="/projeto-lumiar-color.png"
+            alt="Lumiar Cultural"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = '/projeto-lumiar-color.jpg';
+            }}
+          />
         </div>
         <div className="org">
           MUSEU / INSTITUIÇÃO<br />
@@ -1934,7 +2091,22 @@ function App() {
             {n}
           </button>
         ))}
-        <button className="logout" onClick={logout}><LogOut size={18} />Sair</button>
+        <button
+          type="button"
+          className="primary compact"
+          style={{
+            fontSize: '12px',
+            padding: '8px 12px',
+            marginTop: 'auto',
+            justifyContent: 'center',
+            width: '100%',
+            fontWeight: 700
+          }}
+          onClick={logout}
+          title="Sair e voltar ao portal principal"
+        >
+          <LogOut size={14} /> Sair
+        </button>
       </aside>
 
       <main>
@@ -1943,7 +2115,7 @@ function App() {
             <span className="eyebrow">LUMIAR CULTURAL · PLATAFORMA DE ACESSIBILIDADE</span>
             <h1>{nav.find((x: any) => x[0] === page)?.[1] || 'Visão Geral'}</h1>
           </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             {page === 'cultural' && (
               <>
                 <button className="primary compact" style={{ background: '#3b5560' }} onClick={() => setModal('new-space')}>
@@ -1969,6 +2141,15 @@ function App() {
                 <UserPlus size={18} /> Adicionar Curador
               </button>
             )}
+            <button
+              type="button"
+              className="primary compact"
+              style={{ fontSize: '12px', padding: '6px 12px', fontWeight: 700 }}
+              onClick={logout}
+              title="Sair e voltar ao portal principal"
+            >
+              <LogOut size={14} /> Sair
+            </button>
           </div>
         </header>
 

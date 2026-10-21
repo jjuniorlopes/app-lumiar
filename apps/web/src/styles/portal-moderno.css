@@ -178,12 +178,12 @@ body.a11y-large-cursor * {
 }
 
 .lumiar-header-unified-inner {
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 16px 24px 20px 24px;
+  padding: 18px 24px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 /* LINHA 1: Logo + Acessibilidade + Atalhos + Redes Sociais + Idioma */
@@ -576,35 +576,94 @@ body.a11y-large-cursor * {
    2. LINHA 2 DO MENU (NAVEGAÇÃO PRETA + ENTRAR + SOLICITE UMA PROPOSTA)
    ============================================================================== */
 
-.lumiar-header-row-2 {
+.lumiar-header-nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  padding-top: 4px;
+  gap: 20px;
+  width: 100%;
 }
 
-.lumiar-nav-links-black {
+.lumiar-header-logo-color {
+  height: 48px;
+  width: auto;
+  max-width: 175px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.lumiar-header-logo-color:hover {
+  transform: scale(1.02);
+}
+
+.lumiar-header-nav-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.lumiar-nav-links-unified {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
 }
 
+/* Palavra ACESSIBILIDADE em maiúsculo no menu */
+.lumiar-nav-a11y-link {
+  font-family: var(--lumiar-font-sans);
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  background: none;
+  border: none;
+  padding: 6px 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: color 0.15s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lumiar-nav-a11y-link:hover,
+.lumiar-nav-a11y-link:focus-visible {
+  color: #0284c7;
+  outline: none;
+}
+
+.lumiar-nav-a11y-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #0284c7;
+  transition: width 0.2s ease;
+}
+
+.lumiar-nav-a11y-link:hover::after,
+.lumiar-nav-a11y-link:focus-visible::after {
+  width: 100%;
+}
+
 .lumiar-nav-item-link {
   font-family: var(--lumiar-font-sans);
   color: #0f172a;
-  font-size: 14.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
   text-decoration: none;
+  text-transform: uppercase;
   transition: color 0.15s ease;
   position: relative;
   padding: 6px 2px;
+  white-space: nowrap;
 }
 
 .lumiar-nav-item-link:hover,
@@ -629,11 +688,11 @@ body.a11y-large-cursor * {
   width: 100%;
 }
 
-.lumiar-header-cta-group {
+.lumiar-header-right-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  gap: 16px;
+  flex-shrink: 0;
 }
 
 .lumiar-btn-entrar {
@@ -641,7 +700,7 @@ body.a11y-large-cursor * {
   color: #ffffff;
   border: 1px solid #0284c7;
   border-radius: 8px;
-  padding: 9px 26px;
+  padding: 8px 24px;
   font-family: var(--lumiar-font-sans);
   font-size: 14.5px;
   font-weight: 700;
@@ -663,14 +722,64 @@ body.a11y-large-cursor * {
   transform: translateY(-1px);
 }
 
-.lumiar-btn-proposta {
+.lumiar-lang-trigger-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lumiar-globe-icon {
+  color: #0284c7;
+  flex-shrink: 0;
+}
+
+.lumiar-lang-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-family: var(--lumiar-font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  transition: all 0.15s ease;
+}
+
+.lumiar-lang-pill-btn:hover,
+.lumiar-lang-pill-btn:focus-visible {
+  background-color: #f1f5f9;
+  outline: none;
+}
+
+.lumiar-lang-flag-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* LINHA 2: Solicite uma proposta alinhado à direita abaixo de ENTRAR */
+.lumiar-header-proposal-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 76px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.lumiar-btn-proposta-pill {
   background-color: transparent;
   color: #0284c7;
   border: 2px solid #0284c7;
   border-radius: 9999px;
-  padding: 8px 20px;
+  padding: 7px 22px;
   font-family: var(--lumiar-font-sans);
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -680,13 +789,20 @@ body.a11y-large-cursor * {
   text-decoration: none;
 }
 
-.lumiar-btn-proposta:hover,
-.lumiar-btn-proposta:focus-visible {
+.lumiar-btn-proposta-pill:hover,
+.lumiar-btn-proposta-pill:focus-visible {
   background-color: #f0f9ff;
   border-color: #0369a1;
   color: #0369a1;
   outline: 2px solid #38bdf8;
   transform: translateY(-1px);
+}
+
+/* LINHA 3: Barra de Pesquisa Completa */
+.lumiar-header-search-row-unified {
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 6px;
 }
 
 /* ==============================================================================
@@ -821,7 +937,7 @@ body.a11y-large-cursor * {
 .quem-somos-section-wrap {
   position: relative;
   width: 100%;
-  padding: 84px 24px 92px 24px;
+  padding: 64px 24px 32px 24px;
   background-color: #ffffff;
   border: none;
   scroll-margin-top: 72px;
@@ -829,7 +945,7 @@ body.a11y-large-cursor * {
 
 @media (max-width: 768px) {
   .quem-somos-section-wrap {
-    padding: 48px 16px 56px 16px;
+    padding: 36px 16px 20px 16px;
     scroll-margin-top: 60px;
   }
 }
@@ -1004,7 +1120,7 @@ body.a11y-large-cursor * {
    ============================================================================== */
 
 .lumiar-section-products {
-  padding: 96px 24px 104px 24px;
+  padding: 36px 24px 40px 24px;
   background-color: #ffffff;
   border: none;
 }
@@ -1014,7 +1130,7 @@ body.a11y-large-cursor * {
 .lumiar-section-ods .lumiar-section-header {
   text-align: center;
   max-width: 860px;
-  margin: 0 auto 56px;
+  margin: 0 auto 36px;
 }
 
 .lumiar-section-products .lumiar-eyebrow,
@@ -1384,8 +1500,8 @@ body.a11y-large-cursor * {
 
 .lumiar-footer {
   background-color: var(--lumiar-navy);
-  color: #94a3b8;
-  padding: 48px 24px 32px;
+  color: rgb(255, 255, 255);
+  padding: 56px 24px 36px;
   position: relative;
   overflow: hidden;
 }
@@ -1397,35 +1513,341 @@ body.a11y-large-cursor * {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 28px;
+  gap: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 32px;
 }
 
 .lumiar-footer-brand {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
+}
+
+.lumiar-footer-logo-wrap {
+  background-color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  width: fit-content;
 }
 
 .lumiar-footer-logo {
-  height: 42px;
+  height: 52px;
   width: auto;
   object-fit: contain;
+  display: block;
 }
 
 .lumiar-footer-tagline {
-  color: #e2e8f0;
-  font-size: 13px;
-  font-weight: 600;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
 }
 
+/* Regra solicitada expressamente para os links do rodapé */
+footer .footer__content .footer__content--item .nav-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+footer .footer__content .footer__content--item .nav-footer a,
+.lumiar-footer .nav-footer a {
+  --tw-leading: 100%;
+  color: rgb(255, 255, 255);
+  font-size: 18px;
+  line-height: 100%;
+  transition: 0.3s;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer .footer__content .footer__content--item .nav-footer a:hover,
+.lumiar-footer .nav-footer a:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+  transform: translateY(-1px);
+}
+
+/* Caixa de Segurança & Proteção de Dados (LGPD) */
+.lumiar-footer-lgpd-box {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+.lumiar-footer-shield-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.28), rgba(2, 132, 199, 0.38));
+  border: 1px solid rgba(6, 182, 212, 0.6);
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lumiar-footer-lgpd-text {
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.lumiar-footer-lgpd-text strong {
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+}
+
+.lumiar-footer-inline-link {
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.lumiar-footer-inline-link:hover {
+  color: #38bdf8;
+}
+
+.lumiar-footer-lgpd-btn {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.lumiar-footer-lgpd-btn:hover {
+  color: #38bdf8;
+}
+
+/* Copyright menor conforme instrução */
 .lumiar-footer-copy {
   max-width: 1200px;
   margin: 24px auto 0;
-  font-size: 12px;
-  color: #64748b;
+  font-size: 13px;
+  color: rgb(255, 255, 255);
   text-align: center;
+  opacity: 0.92;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .lumiar-footer {
+    padding: 40px 16px 28px;
+  }
+  .lumiar-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  footer .footer__content .footer__content--item .nav-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .lumiar-footer-lgpd-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+}
+
+/* Modal de LGPD / Política de Privacidade */
+.lumiar-lgpd-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.lumiar-lgpd-modal-card {
+  background-color: #ffffff;
+  color: #0f172a;
+  max-width: 760px;
+  width: 100%;
+  max-height: 85vh;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 4px solid #0284c7;
+}
+
+.lumiar-lgpd-modal-header {
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.lumiar-lgpd-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lumiar-lgpd-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0284c7;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.lumiar-lgpd-title {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+}
+
+.lumiar-lgpd-close-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lumiar-lgpd-close-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.lumiar-lgpd-modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #334155;
+}
+
+.lumiar-lgpd-intro-callout {
+  display: flex;
+  gap: 14px;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  color: #065f46;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lumiar-lgpd-intro-callout p {
+  margin: 0;
+}
+
+.lumiar-lgpd-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lumiar-lgpd-section-item h3 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.lumiar-lgpd-section-item p {
+  margin: 0 0 8px;
+  color: #475569;
+}
+
+.lumiar-lgpd-section-item ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+}
+
+.lumiar-lgpd-section-item li {
+  margin-bottom: 6px;
+}
+
+.lumiar-lgpd-contact-card {
+  margin-top: 10px;
+  padding: 14px 16px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 13.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #334155;
+}
+
+.lumiar-lgpd-modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8fafc;
+}
+
+.lumiar-lgpd-confirm-btn {
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.lumiar-lgpd-confirm-btn:hover {
+  background-color: #0369a1;
 }
 
 /* ==============================================================================
@@ -1441,43 +1863,73 @@ body.a11y-large-cursor * {
 .lumiar-breadcrumb-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  justify-content: flex-start;
+  margin-bottom: 28px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 20px;
+  padding: 8px 0;
 }
 
 .lumiar-breadcrumb-nav {
-  font-size: 13px;
-  color: var(--lumiar-muted);
+  font-family: var(--lumiar-font-sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .lumiar-breadcrumb-link {
-  color: var(--lumiar-blue);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  font-family: var(--lumiar-font-sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #0284c7;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.lumiar-btn-back {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: var(--lumiar-navy);
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
+.lumiar-breadcrumb-link:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+.lumiar-breadcrumb-current {
+  font-family: var(--lumiar-font-sans);
+  font-size: 14.5px;
   font-weight: 700;
+  color: #0f172a;
+}
+
+/* Botão voltar com mesma cor azul, texto branco e formato do botão PESQUISA */
+.lumiar-btn-back {
+  background-color: #0284c7;
+  color: #ffffff;
+  border: 1px solid #0284c7;
+  border-radius: 8px;
+  padding: 9px 24px;
+  font-family: var(--lumiar-font-sans);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+  flex-shrink: 0;
 }
 
 .lumiar-btn-back:hover,
 .lumiar-btn-back:focus {
-  background: #f1f5f9;
-  border-color: var(--lumiar-blue);
-  outline: 2px solid #38bdf8;
+  background-color: #0369a1;
+  border-color: #0369a1;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+  transform: translateY(-1px);
+  outline: none;
 }
 
 .lumiar-page-hero-title {
@@ -1526,9 +1978,11 @@ body.a11y-large-cursor * {
 
 .lumiar-detail-img {
   width: 100%;
-  height: 380px;
+  height: 440px;
   object-fit: cover;
+  object-position: center;
   display: block;
+  border-radius: 14px;
 }
 
 .lumiar-detail-content {
@@ -1682,24 +2136,29 @@ body.a11y-large-cursor * {
 }
 
 .lumiar-a11y-reset-btn {
-  background: #ffffff;
-  border: 2px solid #c084fc;
-  color: #9333ea;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
+  background-color: #0284c7;
+  border: 1px solid #0284c7;
+  color: #ffffff;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-family: var(--lumiar-font-sans);
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
   width: 100%;
   text-align: center;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
 }
 
 .lumiar-a11y-reset-btn:hover,
 .lumiar-a11y-reset-btn:focus {
-  background: #f3e8ff;
-  border-color: #7e22ce;
-  outline: 2px solid #9333ea;
+  background-color: #0369a1;
+  border-color: #0369a1;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+  outline: none;
 }
 
 .lumiar-a11y-close-btn {
@@ -1743,6 +2202,8 @@ body.a11y-large-cursor * {
   transition: all 0.2s ease;
   min-height: 98px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  font: inherit;
+  color: inherit;
 }
 
 .lumiar-a11y-item-card:hover,
@@ -1769,10 +2230,19 @@ body.a11y-large-cursor * {
   justify-content: center;
 }
 
+.lumiar-a11y-item-icon img {
+  height: 26px;
+  width: auto;
+  max-width: 32px;
+  object-fit: contain;
+  display: block;
+}
+
 .lumiar-a11y-item-label {
-  font-size: 11px;
+  font: inherit;
+  color: inherit;
+  font-size: 11.5px;
   font-weight: 700;
-  color: #475569;
   line-height: 1.3;
 }
 
@@ -1780,20 +2250,30 @@ body.a11y-large-cursor * {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 12px;
+  padding: 16px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .lumiar-a11y-credit-text {
-  font-size: 11px;
-  color: #64748b;
-  margin-bottom: 6px;
+  font-family: var(--lumiar-font-sans);
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  margin: 0;
   display: block;
 }
 
 .lumiar-a11y-credit-logo {
-  max-width: 140px;
+  max-width: 175px;
   height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 /* ==============================================================================
@@ -1927,24 +2407,29 @@ body.a11y-large-cursor * {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #087e91;
+  background-color: #0284c7;
   color: #ffffff;
-  border: none;
+  border: 1px solid #0284c7;
   border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 14px;
+  padding: 9px 22px;
+  font-family: var(--lumiar-font-sans);
+  font-size: 14.5px;
   font-weight: 700;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(8, 126, 145, 0.22);
-  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
+  transition: all 0.2s ease;
   text-decoration: none;
 }
 
-.login-back-btn:hover {
-  background-color: #066877;
+.login-back-btn:hover,
+.login-back-btn:focus {
+  background-color: #0369a1;
+  border-color: #0369a1;
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(8, 126, 145, 0.32);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.38);
+  outline: none;
 }
 
 /* Card de Login Centralizado e Proporcional */
@@ -2061,7 +2546,7 @@ body.a11y-large-cursor * {
 
 .login-mode-tab.active {
   background: #ffffff;
-  color: #087e91;
+  color: #0284c7;
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
 }
 
@@ -2162,23 +2647,29 @@ body.a11y-large-cursor * {
 /* Botão Entrar */
 .login-submit-btn {
   width: 100%;
-  background-color: #087e91;
+  background-color: #0284c7;
   color: #ffffff;
+  font-family: var(--lumiar-font-sans);
   font-size: 15px;
   font-weight: 700;
+  letter-spacing: 0.02em;
   padding: 12px 18px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #0284c7;
   cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(8, 126, 145, 0.22);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
   margin-top: 4px;
 }
 
-.login-submit-btn:hover:not(:disabled) {
-  background-color: #066877;
+.login-submit-btn:hover:not(:disabled),
+.login-submit-btn:focus:not(:disabled) {
+  background-color: #0369a1;
+  border-color: #0369a1;
+  color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(8, 126, 145, 0.32);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.38);
+  outline: none;
 }
 
 .login-submit-btn:disabled {
@@ -2477,7 +2968,7 @@ body.a11y-large-cursor * {
   width: 100% !important;
   background-color: #ffffff !important;
   font-family: 'Inter', -apple-system, sans-serif !important;
-  padding: 80px 0 !important;
+  padding: 36px 0 64px !important;
   box-sizing: border-box !important;
 }
 
@@ -2980,6 +3471,447 @@ body.a11y-large-cursor * {
   color: #0f172a !important;
   font-weight: 700 !important;
 }
+
+/* ==============================================================================
+   LUMIAR HERO CAROUSEL - BANNER DINÂMICO ROTATIVO (STORE OFFERS / MOVIMENTO ODS)
+   ============================================================================== */
+.lumiar-hero-carousel-wrap {
+  position: relative !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  background-color: #000000 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  user-select: none !important;
+  border-bottom: 1px solid #111827 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.lumiar-hero-carousel-stage {
+  position: relative !important;
+  width: 100% !important;
+  height: 480px !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .lumiar-hero-carousel-stage {
+    height: 380px !important;
+  }
+}
+
+.lumiar-hero-carousel-track {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.lumiar-hero-carousel-slide {
+  position: relative !important;
+  flex-shrink: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: #000000 !important;
+}
+
+.lumiar-hero-carousel-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.50) 50%, rgba(0, 0, 0, 0.70) 100%) !important;
+}
+
+.lumiar-hero-carousel-content {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 20 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 20px 24px !important;
+  pointer-events: none !important;
+}
+
+.lumiar-hero-carousel-content-inner {
+  max-width: 860px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  pointer-events: auto !important;
+}
+
+.lumiar-hero-carousel-tag {
+  display: inline-block !important;
+  padding: 5px 16px !important;
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2.5px !important;
+  text-transform: uppercase !important;
+  border-radius: 2px !important;
+  margin-bottom: 14px !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+.lumiar-hero-carousel-title {
+  color: #ffffff !important;
+  font-size: 48px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  margin: 0 0 14px !important;
+  letter-spacing: -0.5px !important;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.95) !important;
+  text-align: center !important;
+}
+
+@media (max-width: 768px) {
+  .lumiar-hero-carousel-title {
+    font-size: 28px !important;
+    margin-bottom: 10px !important;
+  }
+}
+
+.lumiar-hero-carousel-subtitle {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  margin: 0 0 24px !important;
+  max-width: 720px !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95) !important;
+  text-align: center !important;
+  opacity: 0.95 !important;
+}
+
+@media (max-width: 768px) {
+  .lumiar-hero-carousel-subtitle {
+    font-size: 14px !important;
+    margin-bottom: 18px !important;
+    padding: 0 10px !important;
+  }
+}
+
+.lumiar-hero-carousel-btn {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  font-size: 14px !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  padding: 14px 40px !important;
+  border: none !important;
+  border-radius: 2px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  transition: transform 0.2s ease, background-color 0.2s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+}
+
+.lumiar-hero-carousel-btn:hover {
+  background-color: #f1f5f9 !important;
+  transform: scale(1.04) !important;
+}
+
+.lumiar-hero-carousel-btn:active {
+  transform: scale(0.96) !important;
+}
+
+.lumiar-hero-carousel-arrow {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 30 !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+  transition: transform 0.2s ease, background-color 0.2s ease !important;
+}
+
+.lumiar-hero-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.08) !important;
+  background-color: #f8fafc !important;
+}
+
+.lumiar-hero-carousel-arrow:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+.lumiar-hero-carousel-arrow-prev {
+  left: 24px !important;
+}
+
+.lumiar-hero-carousel-arrow-next {
+  right: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .lumiar-hero-carousel-arrow {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .lumiar-hero-carousel-arrow-prev {
+    left: 10px !important;
+  }
+  .lumiar-hero-carousel-arrow-next {
+    right: 10px !important;
+  }
+}
+
+.lumiar-hero-carousel-dots {
+  position: absolute !important;
+  bottom: 22px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 30 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.lumiar-hero-carousel-dot {
+  height: 3px !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  padding: 0 !important;
+}
+
+.lumiar-hero-carousel-dot-active {
+  width: 54px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.95) !important;
+}
+
+.lumiar-hero-carousel-dot-inactive {
+  width: 34px !important;
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.lumiar-hero-carousel-dot-inactive:hover {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ==============================================================================
+   SEÇÃO ACESSIBILIDADE DIGITAL & LBI (DIREITO À INFORMAÇÃO)
+   Efeitos e contorno idênticos à imagem da seção "O que é o Lumiar?"
+   ============================================================================== */
+.lumiar-section-acessibilidade {
+  width: 100%;
+  padding: 36px 20px 40px;
+  background-color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.lumiar-acessibilidade-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.lumiar-acessibilidade-header {
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto 32px;
+}
+
+.lumiar-acessibilidade-title {
+  font-size: clamp(32px, 4.2vw, 48px);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin: 0 0 18px;
+}
+
+.lumiar-acessibilidade-subtitle {
+  font-size: clamp(16px, 1.8vw, 18.5px);
+  font-weight: 400;
+  color: #475569;
+  line-height: 1.65;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.lumiar-acessibilidade-subtitle strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Card da Imagem com os mesmos efeitos e contorno de "O que é o Lumiar?" */
+.lumiar-acessibilidade-media-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-top: 3px solid #06b6d4;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.20), 0 0 40px -10px rgba(6, 182, 212, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.lumiar-acessibilidade-media-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 70px -15px rgba(15, 23, 42, 0.26), 0 0 50px -5px rgba(6, 182, 212, 0.22);
+}
+
+.lumiar-acessibilidade-media-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.lumiar-acessibilidade-media-card:hover img {
+  transform: scale(1.015);
+}
+
+@media (max-width: 768px) {
+  .lumiar-section-acessibilidade {
+    padding: 50px 16px 60px;
+  }
+  .lumiar-acessibilidade-header {
+    margin-bottom: 32px;
+  }
+  .lumiar-acessibilidade-media-card {
+    border-radius: 20px;
+  }
+}
+
+/* Suporte e Prioridade de Camadas para o Widget Oficial do VLibras na Página */
+[vw],
+[vw-access-button],
+[vw-plugin-wrapper],
+.vw-plugin-wrapper,
+#vlibras-access-wrapper,
+#vlibras-app-root,
+.vp-box {
+  z-index: 9999999 !important;
+}
+
+/* ==============================================================================
+   SEÇÃO INDICADORES DE INCLUSÃO (IBGE 2022 / INCLUTALK INSPIRATION)
+   ============================================================================== */
+.lumiar-indicadores-section {
+  background-color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.max-w-\[926px\] {
+  max-width: 926px;
+}
+
+.max-w-\[960px\] {
+  max-width: 960px;
+}
+
+.max-w-\[1080px\] {
+  max-width: 1080px;
+}
+
+.max-w-\[1180px\] {
+  max-width: 1180px;
+}
+
+.text-\[20px\] {
+  font-size: 20px;
+}
+
+.leading-\[120\%\] {
+  line-height: 1.2;
+}
+
+.text-\[24px\] {
+  font-size: 24px;
+}
+
+.leading-\[100\%\] {
+  line-height: 1.0;
+}
+
+.tracking-\[-0\.48px\] {
+  letter-spacing: -0.48px;
+}
+
+.mt-\[35px\] {
+  margin-top: 35px;
+}
+
+.text-\[56px\] {
+  font-size: 56px;
+}
+
+.tracking-\[-1\.12px\] {
+  letter-spacing: -1.12px;
+}
+
+.text-teal-600 {
+  color: #0284c7 !important;
+}
+
+.text-\[18px\] {
+  font-size: 18px;
+}
+
+.leading-\[130\%\] {
+  line-height: 1.3;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.lumiar-indicador-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.lumiar-indicador-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(13, 148, 136, 0.12), 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+
 
 
 
